@@ -1,0 +1,57 @@
+
+UBUNTU VERSION
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 14.04.5 LTS
+Release:	14.04
+Codename:	trusty
+
+
+R VERSION
+platform       x86_64-pc-linux-gnu
+arch           x86_64
+os             linux-gnu
+system         x86_64, linux-gnu
+status
+major          3
+minor          2.2
+year           2015
+month          08
+day            14
+svn rev        69053
+language       R
+version.string R version 3.2.2 (2015-08-14)
+nickname       Fire Safety
+
+MAIN REFERENCE
+https://cran.rstudio.com/bin/linux/ubuntu/
+https://cran.r-project.org/mirrors.html
+deb https://<my.favorite.cran.mirror>/bin/linux/ubuntu trusty/
+deb https://cran.rstudio.com/bin/linux/ubuntu trusty/
+
+sudo -H gedit /etc/apt/sources.list
+deb http://cran.ma.imperial.ac.uk/bin/linux/ubuntu trusty/
+gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+gpg -a --export E084DAB9 | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install r-base r-base-dev
+
+
+
+
+R VERSION
+platform       x86_64-pc-linux-gnu
+arch           x86_64
+os             linux-gnu
+system         x86_64, linux-gnu
+status
+major          3
+minor          3.2
+year           2016
+month          10
+day            31
+svn rev        71607
+language       R
+version.string R version 3.3.2 (2016-10-31)
+nickname       Sincere Pumpkin Patch
