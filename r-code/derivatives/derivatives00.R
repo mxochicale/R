@@ -25,35 +25,55 @@ data(NIRsoil)
 str(NIRsoil)
 
 # Extract spectral data as datatable
-spc <- as.data.table(  t(NIRsoil$spc) )
-names(spc) <- gsub("^", "\\s", names(spc))
-r  <- as.numeric(colnames(NIRsoil$spc))
+wl  <- as.numeric(colnames(NIRsoil$spc))
+
+s <- as.data.table(  t(NIRsoil$spc) )
+names(s) <- gsub("^", "\\s", names(s))
 
 noise <- as.data.table(
-  matrix(rnorm(nrow(spc)*ncol(spc) ,0,0.005), nrow(spc))
+  matrix(rnorm(nrow(s)*ncol(s) ,0,0.005), nrow(s))
   )
 names(noise) <- gsub("V", "n", names(noise))
 
+sn <- s+noise
+names(sn) <- gsub("s", "sn", names(sn))
+
+
+derone <- as.data.table(  diff( as.matrix(s), differences=1 )  )
+colnames(derone) <- gsub("s", "derone", colnames(derone))
+
+dertwo <- as.data.table(  diff( as.matrix(s), differences=2 )  )
+colnames(dertwo) <- gsub("s", "dertwo", colnames(dertwo))
+
+
 
 DT <- data.table(
-  r,
-  spc,
+  wl,
+  s,
   noise,
-  sn=spc+noise
+  sn,
+  derone,
+  dertwo
   )
-names(DT) <- gsub("sn.s", "sn", names(DT))
 
+
+
+# p <- ggplot(DT)+
+#     geom_line( aes(wl,s1) , size=1 )+
+#     geom_line( aes(wl,sn1), linetype="F1", size=0.2, alpha=0.5, color="red")
+# print(p)
 
 p <- ggplot(DT)+
-    geom_line( aes(r,s1) , size=1 )+
-    geom_line( aes(r,sn1), linetype="F1", size=0.2, alpha=0.5, color="red")
-#      coord_cartesian(y=c(-1,0.1))
+    geom_line( aes(wl,derone1) , size=1 )+
+    geom_line( aes(wl,dertwo1) , size=1, color="red" )
 print(p)
 
 
+#      coord_cartesian(y=c(-1,0.1))
+# # names(DT) <- gsub("sn.s", "sn", names(DT))
+# plot( as.numeric(rownames(d1)), d1[1,], type="l")
 
-  # d1= t(  diff( t(sn) , differences=1 )  )
-  # gsd1 <- gapDer(X=spc,m=1,w=9,s=1)
+# gsd1 <- gapDer(X=spc,m=1,w=9,s=1)
 # sgp <- sgolay(p=1,n=13 ,m=0)
 # dt[,movav:=movav(noisy, w=11) ]
 # dt[,sg1:= savitzkyGolay(noisy, p=3,w=11,m=0) ]
