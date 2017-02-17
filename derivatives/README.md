@@ -1,3 +1,37 @@
+2017-02-17 16:14
+
+
+prospectr package in R by Stevens and Ramirez-Lopez
+is a set of prepropressing tools in spectroscopy.
+Two of the tools I am interested in this package
+are the gap-derivative and the Savitzky-Golay filter.
+(i) the gap-derivative function which
+smooth the data given and then a gap-derivative is applied
+and
+(ii) the Savitzky-Golay filter which
+mathematically speaking is a weighted sum of neighboring values
+where it is fitted a local polynomial regression
+on a given window.
+The advantage of using this package is that both the
+gapDer() and savitzkyGolay() work  with data.frames and matrix.
+
+Similarly, in the documentation of prospectr [2.2 Derivatives]
+is pointed out that derivatives can have positive and negative
+effects on the signal to be derived of which I cited the following
+(-)risk of overfitting the calibration model
+(-)increase noise, smoothing required
+(-)increase uncertainty in model coefficients
+(-)complicated spectral interpretation
+(-)remove the baseline
+(+)Reduce of baseline offset
+(+)resolve the absorption of overlapping
+(+)compensate for instrumental drift
+(+)enhances small spectral absortions
+(+)increase predictive accuracy of complex datasets
+
+
+
+
 2017-02-14 23:25
 
 standard deviation of the standard deviation is not jerk.

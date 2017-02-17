@@ -27,59 +27,95 @@ str(NIRsoil)
 # Extract spectral data as datatable
 wl  <- as.numeric(colnames(NIRsoil$spc))
 
-s <- as.data.table(  t(NIRsoil$spc) )
-names(s) <- gsub("^", "\\s", names(s))
+raw <- as.data.table(  t(NIRsoil$spc) )
+names(raw) <- gsub("^", "\\rawsignal", names(raw))
 
 noise <- as.data.table(
-  matrix(rnorm(nrow(s)*ncol(s) ,0,0.005), nrow(s))
+  matrix(rnorm(nrow(raw)*ncol(raw) ,0,0.005), nrow(raw))
   )
-names(noise) <- gsub("V", "n", names(noise))
+names(noise) <- gsub("V", "noise", names(noise))
 
-sn <- s+noise
-names(sn) <- gsub("s", "sn", names(sn))
-
-
-derone <- as.data.table(  diff( as.matrix(s), differences=1 )  )
-colnames(derone) <- gsub("s", "derone", colnames(derone))
-
-dertwo <- as.data.table(  diff( as.matrix(s), differences=2 )  )
-colnames(dertwo) <- gsub("s", "dertwo", colnames(dertwo))
+sn <- raw+noise
+names(sn) <- gsub("rawsignal", "rawsignoise", names(sn))
 
 
+DerOne <- as.data.table(  diff( as.matrix(raw), differences=1,lag=1 )  )
+colnames(DerOne) <- gsub("rawsignal", "DerOne", colnames(DerOne))
+
+DerTwo <- as.data.table(  diff( as.matrix(raw), differences=2,lag=1 )  )
+colnames(DerTwo) <- gsub("rawsignal", "DerTwo", colnames(DerTwo))
+
+# gapDer: Gap-segment derivative which performs first a smoothing under a given
+# segement size, followed by gap derivative
+# m=order of the derivative; w=window size(={2*gap size}+1);
+# s=segment size first derivative with a gap of 10 bands
+gsDerOne <- gapDer(X=t(raw),m=1,w=11,s=10)
+gsDerOne <- as.data.table( t(gsDerOne))
+colnames(gsDerOne) <- gsub("rawsignal", "gsDerOne", colnames(gsDerOne))
 
 DT <- data.table(
   wl,
-  s,
+  raw,
   noise,
   sn,
-  derone,
-  dertwo
+  DerOne,
+  DerTwo,
+  gsDerOne
   )
 
 
 
+# ##########Plotting##############
 # p <- ggplot(DT)+
-#     geom_line( aes(wl,s1) , size=1 )+
-#     geom_line( aes(wl,sn1), linetype="F1", size=0.2, alpha=0.5, color="red")
-# print(p)
+#     geom_line( aes(wl,rawsignal1) , size=1.2 )+
+#     geom_line( aes(wl,rawsignoise1), linetype="F1", size=0.4, alpha=0.5, color="red")
+
+# p <- ggplot(DT)+
+#     geom_line( aes(wl,DerOne1) , size=1 )+
+#     geom_line( aes(wl,DerTwo1) , size=1, color="red" )
 
 p <- ggplot(DT)+
-    geom_line( aes(wl,derone1) , size=1 )+
-    geom_line( aes(wl,dertwo1) , size=1, color="red" )
-print(p)
+  geom_line( aes(wl,DerOne1) , size=1 )+
+  geom_line( aes(wl,gsDerOne1) , size=1, color="red")
+
+p
 
 
-#      coord_cartesian(y=c(-1,0.1))
+### manipulatepcolumns-by-their-name-pattern-in-r-data-table
+indx <- grep('gsDerOne', names(DT))
+for(k in indx){set(DT,DT[[k]])}
+#then shift for to lead/lag vectors and lists
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###*legends are not working
+# scale_shape_discrete(
+#   name="X",
+#   breaks=c("1st-derivative", "Gap-segment derivative"),
+#   labels=c("1st-derivative", "Gap-segment derivative")
+#   )
+
+## coord_cartesian(y=c(-1,0.1))
 # # names(DT) <- gsub("sn.s", "sn", names(DT))
 # plot( as.numeric(rownames(d1)), d1[1,], type="l")
 
-# gsd1 <- gapDer(X=spc,m=1,w=9,s=1)
+#
 # sgp <- sgolay(p=1,n=13 ,m=0)
 # dt[,movav:=movav(noisy, w=11) ]
 # dt[,sg1:= savitzkyGolay(noisy, p=3,w=11,m=0) ]
 # dt[,sg2:= filter(sgp, noisy) ]
-
-
 # # Moving average or running mean
 # X <- movav(noisy, w=11) # window size of 11 bands
 # # Savitzky-Golay Filtering
