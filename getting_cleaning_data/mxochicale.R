@@ -1,9 +1,8 @@
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 #
-# FileName:           ameen_abodabash.R
+# FileName:           mxochicale.R
 # FileDescription:
-#http://rstudio-pubs-static.s3.amazonaws.com/244526_c102f52d8aea34ffda2ea35c2c9829114.html
 #http://rstudio-pubs-static.s3.amazonaws.com/244526_c102f52d8aea34ffda2ea35c2c9829114.html
 #
 # DOWNLOAD THE DATA:
@@ -111,11 +110,14 @@ names(alldataTable) <- gsub("BodyBody", "Body", names(alldataTable))
 head(str(alldataTable),6)
 
 
-##############################################
-# (5) From the data set in 4, creates a second, independent tidy data set
-# with the average of each variable for each activity and each subject
 
-write.table(dataTable, "TidyData_mxochicale.txt", row.name=FALSE)
+
+# ##############################################
+# # (5) From the data set in 4, creates a second, independent tidy data set
+# # with the average of each variable for each activity and each subject
+#
+# Avoid to create huge data files to make the migration more easy.
+# write.table(dataTable, "TidyData_mxochicale.txt", row.name=FALSE)
 
 
 

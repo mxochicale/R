@@ -1,212 +1,144 @@
-#----------------------------------------------------------------
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 #
+# FileName:           intro_datatable02.R
+# FileDescription:
+#                     Advanced tutorial on the use of data.table
+#
+# Reference:
+#           hpps://brooksandrew.github.io/simpleblog/articles/advamced-data-table
+#
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Miguel P. Xochicale [http://mxochicale.github.io]
 # Doctoral Researcher in Human-Robot Interaction
 # University of Birmingham, U.K. (2014-2018)
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 #
-#------------------------------------------------------------
 #
-# https://rawgit.com/wiki/Rdatatable/data.table/vignettes/datatable-intro.html#data
 
-#  wget https://raw.githubusercontent.com/wiki/arunsrinivasan/flights/NYCflights14/flights14.csv
+library('data.table') # for manipulating data
 
 
-library('data.table')
+dt <- data.table(mtcars)[,.(cyl,gear)]
 
-DT = data.table(ID = c('b','b','b','a','a','c'), a=1:6, b=7:12, c=13:18 )
-DT
-class(DT$ID)
+dt[, unique(gear), by=cyl]
 
-flights <- fread('flights14.csv')
-flights
-dim(flights)
 
-#######################
-# Get all flights with "JFK" as the origin airport in the month of June
-ans <- flights[origin == 'JFK' & month == 6L]
-head(ans)
+##################################
+# summary table (short and narrow)
+dt <- data.table(mtcars)[,.(cyl,gear)]
+dt[,gearsL:=.( .(unique(gear)) ), by=cyl ] # original and uggly
+head(dt)
 
-#######################
-# Get the first two rows from flights
-ans <- flights[1:2]
-ans
 
+##################################
+# Accessing elements from a column of lists
+# Extract second element of each list in gearsL and create row gearL1
+dt[,gearL1:=lapply(gearsL, `[`,2)]#dt[ , gearL1:= lapply(gearsL, function(x) x[2])]
+dt[,gearS1:=sapply(gearsL, `[`,2)]#dt[ , gearS1:= sapply(gearsL, function(x) x[1])]
+head(dt)
 
-#######################
-# Sort flights first by column 'origin' in ascending order, and then by 'dest'
-# in descending order:
-ans <- flights[ order(origin, -dest) ]
-ans
+str( head(dt[,gearL1]  ) )
+str( head(dt[,gearS1]  ) )
 
+# Calculate all the gear s for all cars of each cyl (excluding the current current row).
+dt[,other_gear:=mapply(setdiff, gearsL, gear)] #dt[,other_gear:=mapply(function(x,y) setdiff(x,y), x=gearsL, y=gear)]
+head(dt)
 
-#######################
-# Select arr_delay column, but return it as a vector.
-ans <- flights[,arr_delay]
-head(ans)
 
-#######################
-# Select arr_delay column, but return it as a data.table instead.
-ans <- flights[,list(arr_delay)]
-head(ans)
 
+###################################
+# Suppressing intermediate output wiht {}
+dt <- data.table(mtcars)
 
-#######################
-# Select both arr_delay column and dep_delay column  and return it as a data.table
-ans <- flights[, .(arr_delay,dep_delay)]
-head(ans)
+dt[, {tmp1= mean(mpg); tmp2=mean(abs(mpg-tmp1)); tmp3=round(tmp2,2)  }, by=cyl]
+#we can be more explicit by passing a named list of what we want to keep.
+dt[, {tmp1= mean(mpg); tmp2=mean(abs(mpg-tmp1)); tmp3=round(tmp2,2); .(tmp1=tmp1, tmp2=tmp2, tmp3=tmp3)  }, by=cyl]
 
-#######################
-# Select both arr_delay and dep_delay columns and rename them to delay_arr and delay_dep.
-ans <- flights[, .(delay_arr = arr_delay, delay_dep = dep_delay)]
-head(ans)
+#without semicolons
+dt[, {  tmp1= mean(mpg)
+        tmp2=mean(abs(mpg-tmp1))
+        tmp3=round(tmp2,2)
+        .(tmp1=tmp1, tmp2=tmp2, tmp3=tmp3) },
+    by=cyl]
 
 
-#######################
-# (e) How many trips have had total delay < 0?
-ans <- flights[, sum(  (arr_delay + dep_delay)  < 0 )  ]
-ans
 
+dt <- data.table(mtcars)[,.(cyl,mpg)]
+dt[,tmp1:=mean(mpg), by=cyl][,tmp2:=mean(abs(mpg-tmp1)),by=cyl][,tmp1:=NULL]
+head(dt)
 
-#######################
-# (f) Calculate the average arrival and departure delay for all flights
-# with 'JFK' as the origin airport in the month of June
-ans <- flights[ origin == 'JFK' & month == 6L , .( m_arr = mean(arr_delay),m_dep = mean(dep_delay)  )]
-ans
 
 
-#######################
-# How many trips have been made in 2014 from 'JFK' airport in the month of June?
-#ans <- flights[origin =='JFK' & month == 6L, ]
-ans <- flights[origin =='JFK' & month == 6L, length(dest)]
-ans
+###############################
+# Fast looping with set
+M = matrix(1, nrow=100000, ncol=100)
+DF = as.data.frame(M)
+DT = as.data.table(DF)
 
-# .N is a special in-built variable that holds the number of observations in the current group.
-ans <- flights[origin =='JFK' & month == 6L, .N]
-ans
+system.time(for (i in 1:1000) DF[i,1L] <- i )
+system.time(for (i in 1:1000) DT[i,V1:=i] )
+system.time(for (i in 1:1000) M[i,1L] <- i )
+system.time(for (i in 1:1000) set(DF,i,1L,i)   )
 
+dt <- data.table(mtcars)[,1:5,with=F]
+for(j in c(1L,2L,4L)) set(dt, j=j, value=-dt[[j]]  ) # integers using L passed
+for(j in c(3L,5L)) set(dt, j=j, value= paste0(dt[[j]],'**'))
+head(dt)
 
-#######################
-# (g) Select both arr_delay and dep_delay columns the data.frame way.
-ans <- flights[ , c('arr_delay', 'dep_delay'), with = FALSE]
-ans
 
+############################
+# Using shift for  to lead/lag vectors and lists
+dt <- data.table(mtcars)[,.(mpg,cyl)]
+dt[,mpg_lag1:=shift(mpg,1)]
+dt[,mpg_forward1:=shift(mpg,1, type='lead')]
+head(dt)
 
-DF = data.frame( x= c(1,1,1,2,2,3,3,3), y=1:8 )
-# (1) normal way
-DF[DF$x >1,]
-# (2) using with
-DF[ with(DF, x>1 ), ]
+############################
+# Shift with by
 
-# return all columns except arr_delay and dep_delay
-ans <- flights[, !c("arr_delay","dep_delay") , with=FALSE]
-ans
+n <- 30
+dt <- data.table(
+  date=rep( seq( as.Date('2010-01-01'), as.Date('2015-01-01'), by='year' ), n/6 ),
+  ind=rpois(n,5),
+  entity=sort( rep(letters[1:5], n/5) )
+  )
+setkey(dt, entity, date)   # important for ordering
+dt[,indpct_fast:=(ind/shift(ind,1))-1, by=entity]
+head(dt,10)
 
-ans <- flights[, -c("arr_delay","dep_delay") , with=FALSE]
-ans
+lagpad <- function(x,k) c(rep(NA,k),x)[1:length(x)]
+dt[,indpct_slow:=(ind/lagpad(ind,1))-1, by=entity]
+head(dt,10)
 
-# return year, month and day
-ans <- flights [, year:day, with=FALSE ]
-ans
-# returns all columns except year, month and day.
-ans <- flights [, -(year:day), with=FALSE ]
-ans
+#################################
+# Create multiple columns with := in one statement
 
-
-
-
-
-#######################
-# (2) Aggreatations
-# (a) How can we get the number of trips corresponding to each origin airport?
-ans <- flights[ , .(.N), by= .(origin)]
-ans
-
-# How can we calculate the number of trips of each origin airport for carrier code "AA"?
-ans <- flights[ carrier =='AA', .(.N), by = .(origin)]
-ans
-
-
-# How can we calculate the number of trips for each origin,dest pair for carrier code 'AA'?
-ans <- flights[ carrier =='AA', .(.N), by = .(origin,dest)]
-head(ans)
-
-# How can we get the average arrival and departure delay for each origing,dest pair for
-# each month for arrier code 'AA'?
-ans  <- flights [
-                  carrier =='AA',
-                  .(m_arr = mean(arr_delay), m_dep = mean(dep_delay) ),
-                  by = .(origin, dest, month)]
-ans
-
-
-
-#######################
-# (b) keyby
-ans  <- flights [ carrier =='AA',
-                  .(m_arr = mean(arr_delay), m_dep = mean(dep_delay) ),
-                  keyby = .(origin, dest, month)]
-ans
-
-#######################
-# (c) Chaining
-# How can we order ans using the columns origin in ascending order, and dest in
-# descending order?
-ans <- ans[ order(origin, -dest) ]
-ans
-
-ans  <- flights [ carrier =='AA',
-                  .( .N ),
-                  by = .(origin, dest)][ order(origin, -dest)]
-head(ans,10)
-
-
-#######################
-# (d) Expressions in by
-# Can by accept expressions as well or just take columns?
-ans <- flights[, .N, .(dep_delay >0, arr_delay>0)]
-ans
-
-
-
-
-
-
-#######################
-# Subset of Data SD
-# (e) Do we have to compute mean() for each column individually?
-DT
-DT[, print(.SD), by = ID]
-# To compute on (multiple) columns,we can then simply use the baseR function lapply()
-DT[, lapply(.SD, mean), by = ID]
-
-
-# How can we specify just the columns we would like to compute the mean() on?
-# Let us try to use .SD along wioth .SDcols to get the mean() of arr_delay and
-# dep_delay columns grouped by origin,dest pair and month
-ans <- flights[ carrier == 'AA',            ##Only on trips with carrier "AA"
-                lapply(.SD, mean),                      ## compute the mean
-                by = .(origin, dest, month),            ## for every 'origin, dest, month'
-                .SDcols = c("arr_delay", "dep_delay")   ## for just those specified in .SDcols
-                 ]
-ans
-
-
-#######################
-# (f) How can we return the first two rows for each month ?
-ans <- flights[, head(.SD,2), by= month]
-head(ans)
-
-
-
-
-
-
-
-
-
-
-
-#######################
-# ()
+dt <- data.table(mtcars)[,.(mpg,cyl)]
+dt[, ':='(avg=mean(mpg), med=median(mpg), min= min(mpg)), by=cyl]
+head(dt,10)
+
+
+#################################
+# Assign a column with := named with a character object
+
+dt <- data.table(mtcars)[,.(cyl,mpg)]
+thing2 <- 'mpgx2'
+dt[,(thing2):=mpg*2]
+head(dt,10)
+
+#################################
+#################################
+####
+###      2 BY
+####
+#################################
+#################################
+
+#################################
+# Calculate a function over a group (using by)
+# excluding each entity in a second category
+dt <- data.table(mtcars)[,.(cyl,gear,mpg)]
+dt[,mpg_biased_mean:=mean(mpg), by=cyl]
+# head(dt,10)

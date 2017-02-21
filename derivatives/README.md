@@ -1,5 +1,49 @@
-2017-02-17 16:14
+derivatives
+=======
 
+
+# derivatives00.R
+Use the following libraries:
+library(prospectr)
+library(data.table)
+library(ggplot2)
+
+and create the following derivatives:
+
+```
+DerOne <- as.data.table(  diff( as.matrix(raw), differences=1,lag=1 )  )
+```
+```
+DerTwo <- as.data.table(  diff( as.matrix(raw), differences=2,lag=1 )  )
+```
+
+```
+# gapDer: Gap-segment derivative which performs first a smoothing under a given
+# segement size, followed by gap derivative
+# m=order of the derivative; w=window size(={2*gap size}+1);
+# s=segment size first derivative with a gap of 10 bands
+gsDerOne <- gapDer(X=t(raw),m=1,w=11,s=10)
+gsDerOne <- as.data.table( t(gsDerOne))
+colnames(gsDerOne) <- gsub("rawsignal", "gsDerOne", colnames(gsDerOne))
+
+```
+
+## Observations:
+When using diff method, the lenght of the final vector is always decreasing in length
+such lenghs depends on the difference and the lag value. In this case
+Similarly, when using the method of gap-segment derivative (gsDerOne).
+
+* DerOne is of size 699 but maximum size is 700
+* DerTwo is of size 698 but maximum size is 700
+* gsDerOne is of size 670 but maximum size is 700.
+
+
+
+
+# Comments about the use of derivatives with raw data
+
+#### prospectr package  
+2017-02-17 16:14
 
 prospectr package in R by Stevens and Ramirez-Lopez
 is a set of prepropressing tools in spectroscopy.
@@ -32,6 +76,7 @@ effects on the signal to be derived of which I cited the following
 
 
 
+### Comments on differencing raw data
 2017-02-14 23:25
 
 standard deviation of the standard deviation is not jerk.
@@ -44,17 +89,16 @@ I am using inertial sensors to capture human movement.
 Considering that I am using acceleremeters,
 going in the direction of understanding the physical variables.
 There is a concept call Jerk which is the rate of change of acceleration
-or more appropriatelyy  as the derivative of acceleration with respect of time.
+or more appropriately as the derivative of acceleration with respect of time.
 
-jerk can be seen in enviromenent where the human body loss control of motion
+jerk can be seen in environment where the human body loss control of motion
 such as in elevators, trams, or when driving with beginners whose
 provide a jerky ride.
 [WP Jerk_(physics)]
 
 
-
 therefore, I started to explore how can I derive the data from the acceleremoters
-and I found interesting commends on different internet forums
+and I found interesting commends on different Internet forums
 
 (i)
 in which is mentioned that for instance

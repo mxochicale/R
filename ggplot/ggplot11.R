@@ -67,9 +67,9 @@ p.box <-  ggplot(dt, aes(x=sample, y=val) )+
                panel.border=element_rect(color="black"),
                legend.position="none")
 
+p.box
 
-
-
-tiff("jittering.tiff", height=1000, width=2000, units="px", res=200)
-print(p.box)
-dev.off()
+#### If it is possible, please avoid to create heavy files
+# tiff("jittering.tiff", height=1000, width=2000, units="px", res=200)
+# print(p.box)
+# dev.off()

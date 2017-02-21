@@ -47,8 +47,6 @@ dt <- data.table(
 # Savitzky Golay Filter
 sg <- sgolay(p=1,n=13 ,m=0)
 
-
-
 # Applied Filter to the data
 dt$sg <- filter(sg, dt$noisy)
 

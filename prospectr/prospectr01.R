@@ -61,7 +61,7 @@ p <- ggplot(dt)+
      geom_line(aes(wavelenght,spc1) , size=1)+
      geom_line(aes(wavelenght,noisy), linetype="F1", size=0.2, alpha=0.5)+
      geom_line(aes(wavelenght,movav), col="red2", size=1)+
-     geom_line(aes(wavelenght,sg2), col="red2", size=1)
+     geom_line(aes(wavelenght,sg1), col="red2", size=1)
     #  geom_line(aes(wavelenght,sg2), col="red2", size=1)
 #     ylab("y")+
 #     theme_bw()

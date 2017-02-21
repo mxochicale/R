@@ -1,6 +1,8 @@
-Upgrading R
----
+Upgrading R and  Installing packages for R  
+====
 
+
+# Installation
 
 1. Add an appropriate mirror to your source.list
 ```
@@ -22,25 +24,36 @@ Mirrors https://cran.r-project.org/mirrors.html
 
 
 # My packages
+
 ```
 install.packages("devtools")
 ```
+
+#### [data.table]([https://github.com/Rdatatable/data.table/wiki/Installation)
 ```
 devtools::install_github("Rdatatable/data.table", build_vignettes=FALSE)
-#https://github.com/Rdatatable/data.table/wiki/Installation
 ```
+
+
+#### [prospectr](https://github.com/antoinestevens/prospectr)
 ```
 devtools::install_github("prospectr", "antoinestevens")
-#https://github.com/antoinestevens/prospectr
+
 # Warning message:
 # Username parameter is deprecated. Please use antoinestevens/prospectr
 ```
+
+####  for savitzly-golay filter
 ```
-install.packages("signal") # for savitzly-golay filter
+install.packages("signal")
+```
+#### Interpolation of Irregular and Regularly Spaced Data
+```
+install.packages("akima")
 ```
 
+#### More packages 
 ```
-#Optional
 install.packages("lubridate") # for working with date/times
 install.packages("dplyr") # for manipulating data
 install.packages("tidyr") # for tydying data
