@@ -37,13 +37,14 @@ library(akima)
 # xnew <- seq(-1, 11, 0.1)
 # plot(x, y, ylim=c(-3, 3), xlim=range(xnew))
 # lines(spline(x, y, xmin=min(xnew), xmax=max(xnew), n=200), col="blue")
-#
 # lines(aspline(x, y, xnew), col="red")
 # lines(aspline(x, y, xnew, method="improved"), col="black", lty="dotted")
 # lines(aspline(x, y, xnew, method="improved", degree=10), col="green", lty="dashed")
 
 
-# ## irregular spaced data
+
+
+## irregular spaced data
 # x <- sort(runif(10, max=10))
 # y <- c(rnorm(5), c(1,1,1,1,3))
 # xnew <- seq(-1, 11, 0.1)
