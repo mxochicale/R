@@ -66,9 +66,12 @@ DT <- data.table(
 
 
 # ##########Plotting##############
+
+
 # p <- ggplot(DT)+
 #     geom_line( aes(wl,rawsignal1) , size=1.2 )+
 #     geom_line( aes(wl,rawsignoise1), linetype="F1", size=0.4, alpha=0.5, color="red")
+
 
 # p <- ggplot(DT)+
 #     geom_line( aes(wl,DerOne1) , size=1 )+
@@ -78,6 +81,7 @@ p <- ggplot(DT)+
   geom_line( aes(wl,DerOne1) , size=1 )+
   geom_line( aes(wl,gsDerOne1) , size=1, color="red")
 
+
 p
 
 
@@ -85,13 +89,6 @@ p
 indx <- grep('gsDerOne', names(DT))
 for(k in indx){set(DT,DT[[k]])}
 #then shift for to lead/lag vectors and lists
-
-
-
-
-
-
-
 
 
 
