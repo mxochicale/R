@@ -1,7 +1,7 @@
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 #
-# FileName:           intro_datatable02.R
+# FileName:           shift_data00.R
 # FileDescription:
 #                     Advanced tutorial on the use of data.table
 #
@@ -23,23 +23,8 @@ library('data.table') # for manipulating data
 
 ############################
 # Using shift for  to lead/lag vectors and lists
-dt <- data.table(mtcars)[,.(mpg,cyl)]
-dt[,mpg_lag1:=shift(mpg,1)]
-dt[,mpg_forward1:=shift(mpg,1, type='lead')]
-head(dt)
-
-############################
-# Shift with by
-
-n <- 30
-dt <- data.table(
-  date=rep( seq( as.Date('2010-01-01'), as.Date('2015-01-01'), by='year' ), n/6 ),
-  ind=rpois(n,5),
-  entity=sort( rep(letters[1:5], n/5) )
-  )
-setkey(dt, entity, date)   # important for ordering
-dt[,indpct_fast:=(ind/shift(ind,1))-1, by=entity]
-
-
-lagpad <- function(x,k) c(rep(NA,k),x)[1:length(x)]
-dt[,indpct_slow:=(ind/lagpad(ind,1))-1, by=entity]
+dt <- data.table(mtcars)[,.(mpg,cyl,gear)]
+dt[,mpg_lag10:=shift(mpg ,10)  ]
+dt[,gear_lag15:=shift(gear ,15)  ]
+dt[,mpg_forward5:=shift(mpg,5, type='lead')]
+# head(dt)
