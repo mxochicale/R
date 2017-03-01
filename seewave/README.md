@@ -1,8 +1,6 @@
 seewave
 ===========
 
-
-
 # Main Reference http://rug.mnhn.fr/seewave/
 
 # Installation

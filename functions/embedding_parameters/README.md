@@ -3,6 +3,7 @@
 ## running first time
 ##
 
+Create a genaral to call cao97sub.so
 set dyn.load(path/cao97sub.so )
 
 #1
