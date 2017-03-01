@@ -183,7 +183,7 @@ DT[, lapply(.SD, mean), by = ID]
 
 
 # How can we specify just the columns we would like to compute the mean() on?
-# Let us try to use .SD along wioth .SDcols to get the mean() of arr_delay and
+# Let us try to use .SD along with .SDcols to get the mean() of arr_delay and
 # dep_delay columns grouped by origin,dest pair and month
 ans <- flights[ carrier == 'AA',            ##Only on trips with carrier "AA"
                 lapply(.SD, mean),                      ## compute the mean
