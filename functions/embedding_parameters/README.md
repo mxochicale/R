@@ -3,6 +3,8 @@
 ## running first time
 ##
 
+set dyn.load(path/cao97sub.so )
+
 #1
 extract data from either lorenz, sine or imu time-series
 	extractdata_imu.R
@@ -15,7 +17,7 @@ R CMD SHLIB cao97sub.f
 
 #3
 cao97rf.R
-   compute E1 and E2 values 
+   compute E1 and E2 values
    and print the values in plots
 
 #4 cc -o minfo minfo5.c -lm
@@ -23,4 +25,3 @@ cao97rf.R
 
 #5
 mi_comparison.R
-   
