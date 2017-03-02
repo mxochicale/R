@@ -633,11 +633,12 @@ Plot_2D_State_Space_testing <- function(PCAMatrix, colour, maxplotlenght){
 
   phasespaceplot <- xyplot(PCAMatrix[[1]][1,] ~ PCAMatrix[[1]][2,],
                            type = c("o"),
+                           cex=1.4,
                            col.line = c(colour),
-                           lwd=2,
-                           xlab=list(label="PC2", cex=1.5, fontfamily="Times"),
-                           ylab=list(label="PC1", cex=1.5, fontfamily="Times"),
-                           scales = list(font=1, cex=1
+                           lwd=7,
+                           xlab=list(label="PC2", cex=1, fontfamily="Times"),
+                           ylab=list(label="PC1", cex=1, fontfamily="Times"),
+                           scales = list(font=1, cex=.7
                                          ,x=list(at=seq(-maxplotlenght,maxplotlenght,maxplotlenght/2),limits=c(-maxplotlenght-(0.1*maxplotlenght),maxplotlenght+(0.1*maxplotlenght)))
                                          ,y=list(at=seq(-maxplotlenght,maxplotlenght,maxplotlenght/2),limits=c(-maxplotlenght-(0.1*maxplotlenght),maxplotlenght+(0.1*maxplotlenght)))
                            ),
