@@ -2,6 +2,11 @@ ggplot Examples
 =======
 
 
+# TUTORIALES
+https://www.safaribooksonline.com/library/view/r-graphics-cookbook/9781449363086/ch04.html
+http://rstudio-pubs-static.s3.amazonaws.com/3355_d3f08cb2f71f44f2bbec8b52f0e5b5e7.html
+
+
 #### ggplot00.R
 #### ggplot01.R
 #### ggplot02.R
