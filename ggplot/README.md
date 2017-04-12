@@ -5,6 +5,7 @@ ggplot Examples
 # TUTORIALES
 https://www.safaribooksonline.com/library/view/r-graphics-cookbook/9781449363086/ch04.html
 http://rstudio-pubs-static.s3.amazonaws.com/3355_d3f08cb2f71f44f2bbec8b52f0e5b5e7.html
+http://www.fromthebottomoftheheap.net/2013/10/23/time-series-plots-with-lattice-and-ggplot/
 
 
 #### ggplot00.R
