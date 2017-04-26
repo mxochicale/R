@@ -1,6 +1,9 @@
 Functions
 =====
 
+## @ollin_cencah.R
+* TODO clean the function
+
 #### functions_freq_features.R
 
 #### functions_inertial_sensors.R
@@ -9,8 +12,8 @@ Functions
 
 #### functions_muse_sensor.R
 
-#### ollin_cencah.R
 
-# TO-DO List
+
+# TODO
 * Add description for the R functions in the README.md files with subfunctions
 * Add documentation on how to use the functions

@@ -234,6 +234,10 @@ PCA <- function(Embedded_Matrix, print_flag)
 
 }
 
+
+
+
+
 #-------------------- Area Under the Curve -------------------------
 AUC<-function(ce_vector){
 
@@ -459,6 +463,9 @@ plot_CE_testing<-function(cumEigv,area,dim,tau){
   print(ploting)
 
 }
+# Usage of plot_CE_testing(cumEigv,area,dim,tau)
+# plot_CE_testing(RSS[[6]],RSS[[8]],dim_i,tau_j)
+
 
 
 #-------------------- Plot Percentage of Variances --------------------------
@@ -494,6 +501,7 @@ Plot_PV_testing  <- function(PCAMatrix,dim,tau){
 
   print(plotPV)
 }
+# Usage of Plot_PV_testing(PCAMatrix,dim,tau)
 # Plot_PV_testing(pcamatrix[[5]],dim_i,tau_j)
 
 
@@ -625,7 +633,7 @@ Plot_2D_State_Space <- function(PCAMatrix, colour, maxplotlenght){
 
 # Plot _2D_State Space
 
-#Plot_2D_State_Space_testing <- function(PCAMatrix,dim,tau, colour, maxplotlenght){
+
 Plot_2D_State_Space_testing <- function(PCAMatrix, colour, maxplotlenght){
 
   N <- length(PCAMatrix[[1]][1,])
@@ -660,6 +668,53 @@ Plot_2D_State_Space_testing <- function(PCAMatrix, colour, maxplotlenght){
 
 
 }
+#
+#   #output<-  list(  [1] ,      [2]  ,            [3]  ,          [4]  ,      [5],   [6],   [7],     [8] )
+# PCA output   list(  P , singular_values  ,  rotateddata  ,   Eigen$values  ,  POV, cumEigv, twoPC, auc_cumEigv )
+#
+#
+# Usage of Plot_2D_State_Space_testing(PCAMatrix,colour, maxplotlenght). Examples
+# Plot_2D_State_Space_testing(RSS,'red', 5)
+# Plot_2D_State_Space_testing(tempepca, "red",0.3)
+
+
+
+Plot_2D_State_Space_testing_two <- function(PCAMatrix,dim,tau, colour, maxplotlenght){
+
+  N <- length(PCAMatrix[[1]][1,])
+
+
+  phasespaceplot <- xyplot(PCAMatrix[[1]][1,] ~ PCAMatrix[[1]][2,],
+                           type = c("o"),
+                           cex=1.4,
+                           col.line = c(colour),
+                           lwd=4,
+                           xlab=list(label="", cex=1, fontfamily="Times"), #PC2
+                           ylab=list(label="", cex=1, fontfamily="Times"), #PC1
+                           scales = list(font=1, cex=.7
+                                         ,x=list(at=seq(-maxplotlenght,maxplotlenght,maxplotlenght/2),limits=c(-maxplotlenght-(0.1*maxplotlenght),maxplotlenght+(0.1*maxplotlenght)))
+                                         ,y=list(at=seq(-maxplotlenght,maxplotlenght,maxplotlenght/2),limits=c(-maxplotlenght-(0.1*maxplotlenght),maxplotlenght+(0.1*maxplotlenght)))
+                           ),
+
+                          key=list(
+                            text = list( paste( "[",N,"x",dim,"]","   m=",dim," T=",tau,sep="")   ),
+                            cex=2, # control the character expansion  of the symbols
+                            corner=c(0,0.95) # position
+                          ),
+
+                           panel = function(...) {
+                             panel.abline(h = 0, v = 0, lwd=0.5, lty = 1)
+                             panel.xyplot(...)
+                           }
+
+  )
+
+  print(phasespaceplot)
+
+
+}
+# Usage of Plot_2D_State_Space_testing_two (PCAMatrix,dim,tau, colour, maxplotlenght). Examples
+# Plot_2D_State_Space_testing_two(RSS,dim_i,tau_j, 'red', 5)
 
 
 
@@ -727,6 +782,8 @@ Plot_2D_State_Space_XYZ <- function(PCAMatrix_X,PCAMatrix_Y,PCAMatrix_Z, maxplot
   phasespaceplot_x + as.layer(phasespaceplot_y) + as.layer(phasespaceplot_z)
   )
 }
+# Usage of Plot_2D_State_Space_XYZ(PCAMatrix_X,PCAMatrix_Y,PCAMatrix_Z, maxplotlenght, Sensor)
+
 
 
 
@@ -795,8 +852,7 @@ Plot_3D_State_Space  <- function(PCAMatrix,dim,tau,colour,imu,axis){
 
 
 
-#  Plot_State Space function
-#
+
 Plot_3D_State_Space_testing  <- function(PCAMatrix,dim,tau,colour){
 
   rgl.open()
@@ -830,7 +886,17 @@ Plot_3D_State_Space_testing  <- function(PCAMatrix,dim,tau,colour){
   #  rgl.snapshot("hola.jpg")
 
 }
-#      Plot_State_Space(pcamatrix[[3]],dim_i,tau_j, colour,imu,axis)
+#
+#   #output<-  list(  [1] ,      [2]  ,            [3]  ,          [4]  ,      [5],   [6],   [7],     [8] )
+# PCA output   list(  P , singular_values  ,  rotateddata  ,   Eigen$values  ,  POV, cumEigv, twoPC, auc_cumEigv )
+#
+# Usage of Plot_3D_State_Space_testing(PCAMatrix,dim,tau,colour). Examples:
+#
+# Plot_State_Space(pcamatrix[[3]],dim_i,tau_j, colour,imu,axis)
+# Plot_3D_State_Space_testing(RSS[[3]],dim_i,tau_j,'red')
+
+
+
 
 
 
@@ -854,6 +920,76 @@ euclidean.distances <- function(PCAMatrix){
     return <- distances
 
 }
+
+
+library(plot3D)
+plotRSS3D2D <-function (PCAMatrix)
+{
+
+par(mfrow = c(1, 4), mar = c(5, 3, 5, 3))
+
+### Principal Components
+N <- length(PCAMatrix[[1]][1,])
+col.v <- 1:N
+x <- PCAMatrix[[1]][1,]
+y <- PCAMatrix[[1]][2,]
+z <- PCAMatrix[[1]][3,]
+
+### rotateddata
+# N <- length(PCAMatrix[[3]][1,])
+# col.v <- 1:N
+# x <- PCAMatrix[[3]][1,]
+# y <- PCAMatrix[[3]][2,]
+# z <- PCAMatrix[[3]][3,]
+
+
+scatter3D(
+  x, y, z, colvar = col.v, bty = "u", type = "b", lwd=5,
+ 	axis.scales = TRUE,
+# 	# xlim=c(-1,1),ylim= c(-1,1),zlim=c(-10,30),
+   main = "XYZ",
+   xlab = 'PC1', ylab ='PC2', zlab = 'PC3'
+  #  colkey = list(length = 0.3, width = 0.8, cex.clab = 0.75)
+   )
+
+scatter2D(
+     x, y, colvar = col.v, bty = "n", pch = ".",
+     type='l', lwd=5,
+     cex = 5, colkey = TRUE,
+     main = "PC1~PC2",
+     xlab = 'PC1', ylab ='PC2'
+     )
+
+scatter2D(
+ y, z, colvar = col.v, bty = "n", pch = ".",
+ type='l', lwd=5,
+ cex = 5, colkey = TRUE,
+ main = "PC2~PC3",
+ xlab = 'PC2', ylab ='PC3'
+ )
+
+scatter2D(
+ x, z, colvar = col.v, bty = "n", pch = ".",
+ type='l', lwd=5,
+ cex = 5, colkey = TRUE,
+ main = "PC1~PC3",
+ xlab = 'PC1', ylab ='PC3'
+ )
+
+
+
+}
+#
+#   #output<-  list(  [1] ,      [2]  ,            [3]  ,          [4]  ,      [5],   [6],   [7],     [8] )
+# PCA output   list(  P , singular_values  ,  rotateddata  ,   Eigen$values  ,  POV, cumEigv, twoPC, auc_cumEigv )
+#
+# Usage of plotRSS3D2D(PCAMatrix). Example
+# plotRSS3D2D(RSS)
+
+
+
+
+
 
 
 
