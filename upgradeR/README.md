@@ -75,14 +75,6 @@ install.packages("signal")
 install.packages("akima")
 ```
 
-install.packages("rgl", dependencies = TRUE)  # choose Bristol Repository
-install.packages("tseriesChaos")   # choose Bristol Repository
-install.packages("gplots", dependencies = TRUE) #for heatmaps
-install.packages("RColorBrewer", dependencies = TRUE)
-install.packages("fractal")
-install.packages("scatterplot3d")
-install.packages("latticeExtra")
-
 
 
 
@@ -97,6 +89,15 @@ install.packages("plotly") # for beuatiful ploting
 install.packages("zoo") # for databases
 install.packages("plyr") # for databases
 
+
+install.packages("rgl", dependencies = TRUE)  # choose Bristol Repository
+install.packages("tseriesChaos")   # choose Bristol Repository
+install.packages("gplots", dependencies = TRUE) #for heatmaps
+install.packages("RColorBrewer", dependencies = TRUE)
+install.packages("scatterplot3d")
+install.packages("latticeExtra")
+
+install.packages('fractal', repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
 
 install.packages("ROCR") #visualizing classifier performance
 install.packages("pROC") #Display and Analyze ROC Curves
