@@ -21,9 +21,32 @@ sudo apt-get install r-base r-base-dev
 Main Reference https://cran.rstudio.com/bin/linux/ubuntu/  
 Mirrors https://cran.r-project.org/mirrors.html  
 
+UK Mirrors
+```
+https://www.stats.bris.ac.uk/R/
+http://www.stats.bris.ac.uk/R/
+https://mirrors.ebi.ac.uk/CRAN/
+http://mirrors.ebi.ac.uk/CRAN/
+https://cran.ma.imperial.ac.uk/
+http://cran.ma.imperial.ac.uk/
+http://mirror.mdx.ac.uk/R/
+```
+
+# TODO
+
+* create sh or Makefile for automatic upgrade of R
 
 
 # My packages
+
+Using Bristol repo!:
+install.packages('package-name', repos='https://www.stats.bris.ac.uk/R/')
+
+
+### devtools
+
+devtools dependencies
+sudo apt-get install libssl-dev libcurl4-openssl-dev
 
 ```
 install.packages("devtools")
@@ -52,7 +75,19 @@ install.packages("signal")
 install.packages("akima")
 ```
 
-#### More packages 
+install.packages("rgl", dependencies = TRUE)  # choose Bristol Repository
+install.packages("tseriesChaos")   # choose Bristol Repository
+install.packages("gplots", dependencies = TRUE) #for heatmaps
+install.packages("RColorBrewer", dependencies = TRUE)
+install.packages("fractal")
+install.packages("scatterplot3d")
+install.packages("latticeExtra")
+
+
+
+
+
+#### More packages
 ```
 install.packages("lubridate") # for working with date/times
 install.packages("dplyr") # for manipulating data
@@ -61,12 +96,56 @@ install.packages("plotly") # for beuatiful ploting
 #Hadley Wickham
 install.packages("zoo") # for databases
 install.packages("plyr") # for databases
+
+
+install.packages("ROCR") #visualizing classifier performance
+install.packages("pROC") #Display and Analyze ROC Curves
 ```
+
+
+
+
+
 
 # R Upgrages Log
 
+```
+$ R
+> version
+
+
+platform       x86_64-pc-linux-gnu         
+arch           x86_64                      
+os             linux-gnu                   
+system         x86_64, linux-gnu           
+status                                     
+major          3                           
+minor          3.3                         
+year           2017                        
+month          03                          
+day            06                          
+svn rev        72310                       
+language       R                           
+version.string R version 3.3.3 (2017-03-06)
+nickname       Another Canoe        
+```
+
+
+```
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 14.04.3 LTS
+Release:	14.04
+Codename:	trusty
+```
+
+
 ### R version 3.3.2 (2016-10-31)
 ```
+$ R
+> version
+
 platform       x86_64-pc-linux-gnu
 arch           x86_64
 os             linux-gnu
@@ -83,8 +162,14 @@ version.string R version 3.3.2 (2016-10-31)
 nickname       Sincere Pumpkin Patch
 ```
 
+
+
+
 ### R version 3.2.2 (2015-08-14)
 ```
+$ R
+> version
+
 platform       x86_64-pc-linux-gnu
 arch           x86_64
 os             linux-gnu
@@ -102,7 +187,6 @@ nickname       Fire Safety
 ```
 
 
-### UBUNTU VERSION
 ```
 $ lsb_release -a
 No LSB modules are available.
