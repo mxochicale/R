@@ -1,5 +1,11 @@
-r-code Source Repository
-==============
+R Source Code Repository
+===
+
+*""If progress is to be made in graphics,
+we must be prepared to set aside old
+procedures when better ones are
+developed, just as is done in other
+areas of science."*  ~ W.S. Cleveland, 1983
 
 
 
@@ -15,10 +21,20 @@ or paths,
   * README.md
   * *.R files*
 
-# TO-DO list
+
+
+# Useful References
+* [Free course for R](http://tryr.codeschool.com/)  
+* [Baptise](https://github.com/baptiste/)  
+    https://github.com/baptiste/talks/blob/master/graphics.pdf
+
+
+# TODO
 * Create a README.md per path for which a brief description
    of the R scripts have to be made.
 * Create and easy way to migrate main_data_directory
+
+
 
 > [Miguel P. Xochicale](https://github.com/mxochicale)  
 > Doctoral Researcher in Human-Robot Interaction  
