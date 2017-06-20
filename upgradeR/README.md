@@ -177,18 +177,24 @@ install.packages("akima", repos='https://www.stats.bris.ac.uk/R/', dependencies 
 
 
 
-## More packages
-
-
 ### rgl
 
 It takes a while of time for the installation, perhaps 5 min.
 ```
-install.packages("rgl", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-#or
-# if (!require("rgl")) install.packages("rgl")
+.packages <- ("rgl")
+lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stats.bris.ac.uk/R/')
 ```
 
+### plot3D
+
+```
+.packages <- c('car', 'scatterplot3d', 'plot3D')
+lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stats.bris.ac.uk/R/')
+```
+
+
+
+## More packages
 
 
 
