@@ -116,8 +116,12 @@ ts <- ts[action != 0 & action != 2 & action != 6]
 # make action and id into factors
 ts[, `:=`(action, factor(action))]
 ts[, `:=`(id, factor(id))]
+
+
 # give meaningful level names
 levels(ts$action) <- list(work = "1", stand = "3", walk = "4", climb = "5",  talk = "7")
+
+
 ## define more time series
 ts[, `:=`(amag, sqrt(ax^2 + ay^2 + az^2))]  #accel magnitude
 # principal components
@@ -148,7 +152,7 @@ ts[, hpc3 := pc3 - lpc3]
 
 
 setwd(main_data_output_path)
-fwrite(ts, file='ts')
+fwrite(ts, file='ts2')
 
 
 # Stop the clock!

@@ -4,6 +4,9 @@
 # FileName:     *.R
 # Description:
 # ExecutionTime: 1.01780143254333 hours
+#                59.8282842437426 mins for fdt2
+#                58.7080676635106 mins
+#Time difference of 1.01440851575798 hours
 #
 #
 # NOTE:
@@ -47,9 +50,8 @@ start.time <- Sys.time()
 
 # Setting Output Paths
 setwd(main_data_output_path)
-ts <- fread(file="ts")
-
-
+ts <- fread(file="ts2")
+ts[, `:=`(action, factor(action))]
 
 
 ################################################################################
@@ -86,7 +88,6 @@ feature.extract <- function (dt) {
   #center and subset relevant cols
   dt[, c("lax", "lay", "laz","hax", "hay","haz","lamag", "hamag") :=
        lapply(.(lax, lay, laz, hax, hay, haz, lamag, hamag), scale, center=T, scale=F)]
-
   dts <- dt[ ,.(lax, lay, laz, hax, hay, haz, lamag, hamag, lpc1, lpc2, lpc3, hpc1, hpc2, hpc3)]
   #names of all time series
   namevec <- names(dts)
@@ -126,7 +127,6 @@ feature.extract <- function (dt) {
   return ( c(zcs, p2p, rmsvec, kurt, skew, cfvec, rmsvec.vel, entr, label) )
 }
 
-
 sampleHz <- 52
 
 #sliding window parameters
@@ -139,14 +139,14 @@ hop = round(winsize * overlap)
 ffrows <- round(nrow(ts)/(winsize*overlap))
 nfeat <- length( feature.extract (ts[1:(1 + winsize), ]) )
 #feature dt
-fdt <- data.table(matrix(data = 0.0, nrow = ffrows, ncol = nfeat) )
+fdt <- data.table(matrix(data = 0, nrow = ffrows, ncol = nfeat) )
 names(fdt) <- names( feature.extract (ts[1:(1+ winsize), ]) )
 
-
-
+# #converting label column from double to character type
+# fdt <- fdt[, label:=as.character(label)]
 
 ix <- 1  #index for time series
-rx <- 1L #index for feature dt
+rx <- 1L #index for feature dt (number of row)
 while ((ix) <= nrow(ts)-winsize ) { # nrow(ts)-winsize = 1,827,451
   #ensure whole window has the same action label
   if (ts[ix, action] == ts[ix + winsize, action] ) {
@@ -160,19 +160,19 @@ while ((ix) <= nrow(ts)-winsize ) { # nrow(ts)-winsize = 1,827,451
   }
 }
 
+
 #remove few extra rows created during prealloc
 fdt <- fdt[lax.p2p != 0 & lpc1.rms != 0 & lpc2.rms != 0,]
 #make label into factor for fdt
 fdt[,label := factor(label) ]
 
-fwrite(fdt, file='fdt')
 
+fwrite(fdt, file='fdt2')
 
 
 # Stop the clock!
 end.time <- Sys.time()
 end.time - start.time
-
 
 
 #############################################

@@ -3,7 +3,8 @@
 #
 # FileName:     *.R
 # Description:
-# ExecutionTime: Time difference of 33.44067 mins
+# ExecutionTime:
+# 3.660269 hours for fdt0
 #
 #
 # NOTE:
@@ -19,42 +20,51 @@
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Loading Functions and Libraries and Setting up digits
-library(data.table) # for manipulating data
-library("caret")# for createDataPartition()
-library(kknn)
+library("caret")
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Defining paths for main_path, r_scripts_path, ..., etc.
 # setwd("../")
 r_scripts_path <- getwd()
-main_data_path <- paste("/home/map479/mxochicale/github/DataSets/activity_recognition_accelerometer_dataset/data",sep="")
-main_data_output_path <- paste("/home/map479/mxochicale/github/DataSets/activity_recognition_accelerometer_dataset/output",sep="")
 
 
-## Setting up path and loading data
-setwd(main_data_output_path)
-# fdt <- fread(file="fdt0")
-# fdt <- fread(file="fdt1")
-fdt <- fread(file="fdt2")
-
-#make label into factor for fdt
-fdt[,label := factor(label) ]
 
 
 # Start the clock!
 start.time <- Sys.time()
 
+
 ################################################################################
 ################################################################################
 ## Modeling
 
-trainix <- createDataPartition(fdt$label, p = .85,    list = FALSE, times = 1)
-traindt <- fdt[trainix, ]
-testdt <- fdt[-trainix, ]
 
-wknn <- kknn(label ~ . , train = traindt, test = testdt, kernel = "optimal", k=5)
-wknn.cm <- confusionMatrix(wknn$fitted.values, testdt$label)
+
+
+head(iris)
+names(iris)
+
+#In this we assign the data from column 1-4 (features) to variable x, and the class to variable y
+x = iris[,-5]
+y = iris$Species
+
+
+
+# Creating the model with cross validation =10
+model = train(x,y,'nb',trControl=trainControl(method='cv',number=10))
+
+# use predict for getting prediction value, and result class:
+predict(model$finalModel,x)
+
+#  The last one, we need to know how many error classified,
+# so we need to compare the result of prediction with the class/iris species.
+table(predict(model$finalModel,x)$class,y)
+
+
+naive_iris <- NaiveBayes(iris$Species ~ ., data = iris)
+plot(naive_iris)
+
 
 # Stop the clock!
 end.time <- Sys.time()

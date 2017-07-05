@@ -3,7 +3,7 @@
 #
 # FileName:     *.R
 # Description:
-# ExecutionTime: Time difference of 33.44067 mins
+# ExecutionTime:Time difference of 0.1480024 secs
 #
 #
 # NOTE:
@@ -19,8 +19,6 @@
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Loading Functions and Libraries and Setting up digits
-library(data.table) # for manipulating data
-library("caret")# for createDataPartition()
 library(kknn)
 
 
@@ -28,33 +26,33 @@ library(kknn)
 # Defining paths for main_path, r_scripts_path, ..., etc.
 # setwd("../")
 r_scripts_path <- getwd()
-main_data_path <- paste("/home/map479/mxochicale/github/DataSets/activity_recognition_accelerometer_dataset/data",sep="")
-main_data_output_path <- paste("/home/map479/mxochicale/github/DataSets/activity_recognition_accelerometer_dataset/output",sep="")
 
 
-## Setting up path and loading data
-setwd(main_data_output_path)
-# fdt <- fread(file="fdt0")
-# fdt <- fread(file="fdt1")
-fdt <- fread(file="fdt2")
-
-#make label into factor for fdt
-fdt[,label := factor(label) ]
 
 
 # Start the clock!
 start.time <- Sys.time()
 
+
 ################################################################################
 ################################################################################
 ## Modeling
 
-trainix <- createDataPartition(fdt$label, p = .85,    list = FALSE, times = 1)
-traindt <- fdt[trainix, ]
-testdt <- fdt[-trainix, ]
 
-wknn <- kknn(label ~ . , train = traindt, test = testdt, kernel = "optimal", k=5)
-wknn.cm <- confusionMatrix(wknn$fitted.values, testdt$label)
+
+data(iris)
+m <- dim(iris)[1]
+val <- sample(1:m, size = round(m/3), replace = FALSE, prob = rep(1/m, m))
+iris.learn <- iris[-val,]
+iris.valid <- iris[val,]
+
+iris.kknn <- kknn(Species~., iris.learn, iris.valid, distance = 1, kernel = "triangular")
+summary(iris.kknn)
+
+fit <- fitted(iris.kknn)
+table(iris.valid$Species, fit)
+pcol <- as.character(as.numeric(iris.valid$Species))
+pairs(iris.valid[1:4], pch = pcol, col = c("green3", "red")[(iris.valid$Species != fit)+1])
 
 # Stop the clock!
 end.time <- Sys.time()

@@ -3,7 +3,7 @@
 #
 # FileName:     *.R
 # Description:
-# ExecutionTime: Time difference of 33.44067 mins
+# ExecutionTime:
 #
 #
 # NOTE:
@@ -19,8 +19,6 @@
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Loading Functions and Libraries and Setting up digits
-library(data.table) # for manipulating data
-library("caret")# for createDataPartition()
 library(kknn)
 
 
@@ -28,33 +26,36 @@ library(kknn)
 # Defining paths for main_path, r_scripts_path, ..., etc.
 # setwd("../")
 r_scripts_path <- getwd()
-main_data_path <- paste("/home/map479/mxochicale/github/DataSets/activity_recognition_accelerometer_dataset/data",sep="")
-main_data_output_path <- paste("/home/map479/mxochicale/github/DataSets/activity_recognition_accelerometer_dataset/output",sep="")
 
 
-## Setting up path and loading data
-setwd(main_data_output_path)
-# fdt <- fread(file="fdt0")
-# fdt <- fread(file="fdt1")
-fdt <- fread(file="fdt2")
-
-#make label into factor for fdt
-fdt[,label := factor(label) ]
 
 
 # Start the clock!
 start.time <- Sys.time()
 
+
 ################################################################################
 ################################################################################
 ## Modeling
 
-trainix <- createDataPartition(fdt$label, p = .85,    list = FALSE, times = 1)
-traindt <- fdt[trainix, ]
-testdt <- fdt[-trainix, ]
 
-wknn <- kknn(label ~ . , train = traindt, test = testdt, kernel = "optimal", k=5)
-wknn.cm <- confusionMatrix(wknn$fitted.values, testdt$label)
+data(ionosphere)
+ionosphere.learn <- ionosphere[1:200,]
+ionosphere.valid <- ionosphere[-c(1:200),]
+fit.kknn <- kknn(class ~ ., ionosphere.learn, ionosphere.valid)
+table(ionosphere.valid$class, fit.kknn$fit)
+
+(fit.train1 <- train.kknn(class ~ ., ionosphere.learn, kmax = 15,
+kernel = c("triangular", "rectangular", "epanechnikov", "optimal"), distance = 1))
+table(predict(fit.train1, ionosphere.valid), ionosphere.valid$class)
+
+
+(fit.train2 <- train.kknn(class ~ ., ionosphere.learn, kmax = 15,
+kernel = c("triangular", "rectangular", "epanechnikov", "optimal"), distance = 2))
+table(predict(fit.train2, ionosphere.valid), ionosphere.valid$class)
+
+
+
 
 # Stop the clock!
 end.time <- Sys.time()
