@@ -47,9 +47,9 @@ install.packages("kknn", repos='https://www.stats.bris.ac.uk/R/', dependencies =
 
 
 # TODO
-* I have notice that I got slightly different results from
-[L. Zertuche](http://rstudio-pubs-static.s3.amazonaws.com/165795_92b97c49b5a74d04940670469a9a40f2.html)
-in the confusion matrixes, the classification accuracies and different feature
+* TO: L. Zertuche
+I have I got slightly different results from your [tutorial](http://rstudio-pubs-static.s3.amazonaws.com/165795_92b97c49b5a74d04940670469a9a40f2.html)
+for the confusion matrices, the classification accuracies and feature
 order for the variable of importance plots. With that in mind, I believe that
 further exploration has to be made in order to understand about the differences of
-performances between methods and maybe(machines).
+performances between the methods and maybe the implementation on different machines.
