@@ -1,5 +1,15 @@
 Functions
-=====
+---
+
+# Usage
+
+Source your functions by adding this line to your code
+
+```
+source('~/mxochicale/github/r-code_repository/functions/ollin_cencah.R')
+```
+
+
 
 ## @ollin_cencah.R
 * TODO clean the function
