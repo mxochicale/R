@@ -1,14 +1,19 @@
 derivatives
-=======
+---
+
+#### Package Dependencies
+
+
+```
+R
+install.packages("prospectr", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
+```
+
 
 
 # derivatives00.R
-Use the following libraries:
-library(prospectr)
-library(data.table)
-library(ggplot2)
 
-and create the following derivatives:
+
 
 ```
 DerOne <- as.data.table(  diff( as.matrix(raw), differences=1,lag=1 )  )
@@ -16,26 +21,33 @@ DerOne <- as.data.table(  diff( as.matrix(raw), differences=1,lag=1 )  )
 ```
 DerTwo <- as.data.table(  diff( as.matrix(raw), differences=2,lag=1 )  )
 ```
-
 ```
-# gapDer: Gap-segment derivative which performs first a smoothing under a given
-# segement size, followed by gap derivative
-# m=order of the derivative; w=window size(={2*gap size}+1);
-# s=segment size first derivative with a gap of 10 bands
 gsDerOne <- gapDer(X=t(raw),m=1,w=11,s=10)
-gsDerOne <- as.data.table( t(gsDerOne))
-colnames(gsDerOne) <- gsub("rawsignal", "gsDerOne", colnames(gsDerOne))
-
 ```
 
-## Observations:
 When using diff method, the lenght of the final vector is always decreasing in length
-such lenghs depends on the difference and the lag value. In this case
-Similarly, when using the method of gap-segment derivative (gsDerOne).
+which depends on the difference and the lag value.
+Similarly, when using the method of gap-segment derivative (gsDerOne):
+
 
 * DerOne is of size 699 but maximum size is 700
 * DerTwo is of size 698 but maximum size is 700
 * gsDerOne is of size 670 but maximum size is 700.
+
+
+# smooth_derivative.R
+
+After some testing with the script, I have found that creating noisy data
+then smoothing it with Savitzky-Golay Filter and then derivate it
+produce some strange smooth plots (pX) that I believe are becaseu of the
+the given window for the local polynomial reggresion.
+With these results, I conclude that the method of gap
+segmened derivative which provides a smoother versions of the data
+"gapDer(X = NIRsoil$spc, m = 1, w = 11, s = 10)"
+http://antoinestevens.github.io/prospectr/
+
+
+However, we have to deal with the problem of the decrease of lenght.
 
 
 
@@ -61,7 +73,7 @@ gapDer() and savitzkyGolay() work  with data.frames and matrix.
 
 Similarly, in the documentation of prospectr [2.2 Derivatives]
 is pointed out that derivatives can have positive and negative
-effects on the signal to be derived of which I cited the following
+effects on the signal to be derived
 (-)risk of overfitting the calibration model
 (-)increase noise, smoothing required
 (-)increase uncertainty in model coefficients
@@ -121,3 +133,9 @@ Ramsay and Silverman suggest to use quintic splines to perform second derivative
 as they are cubic splines.
 "the first derivative of a spline of order k is a spline of order k-1"
 [nabble.com/how-to-calculate-derivative-td3054536.html]
+
+
+# Issues
+
+## gapDer() is decreasing the length of the original vector
+https://github.com/antoinestevens/prospectr/issues/2

@@ -15,8 +15,9 @@
 
 
 
-library(signal)
+
 library(prospectr) #for signal processing and NIRsoil
+library(signal) # for sgolay polynomial and filter
 library(data.table)
 library(ggplot2)
 
@@ -36,13 +37,15 @@ outcomes_path <- paste(main_path,"/DataSets/temp_plots",sep="")
 ################################################################################
 # (3) Creating and Changing to Preprosseced Data Path
 #
-plot_path <- paste(outcomes_path,"/derivatives/derivatives00",sep="")
+plot_path <- paste(outcomes_path,"/derivatives/smooth_derivative",sep="")
 if (file.exists(plot_path)){
   setwd(file.path(plot_path))
 } else {
   dir.create(plot_path, recursive=TRUE)
   setwd(file.path(plot_path))
 }
+
+
 
 
 
@@ -78,28 +81,35 @@ names(sn) <- gsub("rawsignal", "rawsignoise", names(sn))
 
 
 
+
+################################################################################
+### (4.2) Smoothing data with Savitzky-Golay Filter
+###
+SavitzkyGolayCoeffs <- sgolay(p=5,n=155 ,m=0)
+
+### FUNCTON TO SMOOTH THE DATA
+SGolay <- function(xinput,sgCoeffs){
+  output <- filter(sgCoeffs, xinput)
+  return(output)
+}
+
+
+sn[, paste("SG", names(sn),  sep= ""):= lapply( .SD , function(x) ( SGolay(x,SavitzkyGolayCoeffs)  )  ) ]
+
+
+
+
+
 ################################################################################
 ### Derivatives
-DerOne <- as.data.table(  diff( as.matrix(raw), differences=1,lag=1 )  )
-colnames(DerOne) <- gsub("rawsignal", "DerOne", colnames(DerOne))
-
-DerTwo <- as.data.table(  diff( as.matrix(raw), differences=2,lag=1 )  )
-colnames(DerTwo) <- gsub("rawsignal", "DerTwo", colnames(DerTwo))
-
-# gapDer: Gap-segment derivative which performs first a smoothing under a given
-# segement size, followed by gap derivative
-# m=order of the derivative; w=window size(={2*gap size}+1);
-# s=segment size first derivative with a gap of 10 bands
-gsDerOne <- gapDer(X=t(raw),m=1,w=11,s=10)
-
-gsDerOne <- as.data.table( t(gsDerOne))
-colnames(gsDerOne) <- gsub("rawsignal", "gsDerOne", colnames(gsDerOne))
+DerOne <- as.data.table(  diff( as.matrix(sn), differences=1,lag=1 )  )
+colnames(DerOne) <- gsub("rawsignoise", "DerOnerawsignoise", colnames(DerOne))
+colnames(DerOne) <- gsub("SGDerOnerawsignoise", "DerOneSGrawsignoise", colnames(DerOne))
 
 
-gsDerTwo <- gapDer(X=t(raw),m=2,w=11,s=10)
-gsDerTwo <- as.data.table( t(gsDerTwo))
-colnames(gsDerTwo) <- gsub("rawsignal", "gsDerTwo", colnames(gsDerTwo))
-
+DerTwo <- as.data.table(  diff( as.matrix(sn), differences=2,lag=1 )  )
+colnames(DerTwo) <- gsub("rawsignoise", "DerTworawsignoise", colnames(DerTwo))
+colnames(DerTwo) <- gsub("SGDerTworawsignoise", "DerTwoSGrawsignoise", colnames(DerTwo))
 
 
 
@@ -112,9 +122,7 @@ DT <- data.table(
   noise,
   sn,
   DerOne,
-  DerTwo,
-  gsDerOne,
-  gsDerTwo
+  DerTwo
   )
 
 
@@ -122,13 +130,16 @@ DT <- data.table(
 ################################################################################
 ### Plotting
 
-tagname <- "plot"
+
+tagname <- "plot-smooth-derivative"
+
+
 
 p0 <- ggplot(DT )+
-    geom_line( aes(wl, rawsignal1,colour="raw") , size=1.4, linetype = "solid", alpha=1.0)+
-    geom_line( aes(wl, rawsignoise1,colour="raw+noise") , size=0.4, linetype="F1", alpha=1.0)+
+    geom_line( aes(wl, rawsignoise1,colour="rawsignoise") , size=0.4, linetype = "solid", alpha=1.0)+
+    geom_line( aes(wl, SGrawsignoise1,colour="sgrawsignoise") , size=1.4, linetype="solid", alpha=1.0)+
     scale_colour_manual("",
-                    breaks = c("raw", "raw+noise"),values = c("blue", "red"))+
+                    breaks = c("rawsignoise", "sgrawsignoise"),values = c("blue", "red"))+
     theme(legend.position = c(0.8, 0.9),
           legend.background = element_rect(size = 0.2,
                                            color = "black",
@@ -142,17 +153,18 @@ p0
 dev.off()
 
 
-p1 <- ggplot(DT)+
-    geom_line( aes(wl, DerOne1,colour="der_diff1") , size=1.4, linetype = "solid", alpha=1.0)+
-    geom_line( aes(wl, DerTwo1,colour="der_diff2") , size=0.4, linetype="F1", alpha=1.0)+
+
+
+p1 <- ggplot(DT )+
+    geom_line( aes(wl, DerOnerawsignoise1,colour="sgdo") , size=1.4, linetype = "solid", alpha=1.0)+
+    geom_line( aes(wl, DerOneSGrawsignoise1,colour="sgdt") , size=0.4, linetype="F1", alpha=1.0)+
     scale_colour_manual("",
-                    breaks = c("der_diff1", "der_diff2"),values = c("blue", "red"))+
+                    breaks = c("sgdo", "sgdt"),values = c("blue", "red"))+
     theme(legend.position = c(0.8, 0.9),
           legend.background = element_rect(size = 0.2,
                                            color = "black",
                                            fill = "grey90",
                                            linetype = "solid"))
-
 
 
 tiff(filename= paste(tagname,"_p1.tiff",sep=''),
@@ -162,22 +174,16 @@ dev.off()
 
 
 
-
-
-
-
-
-p2 <- ggplot(DT)+
-    geom_line( aes(wl, gsDerOne1,colour="gapDer1") , size=1.4, linetype = "solid", alpha=1.0)+
-    geom_line( aes(wl, gsDerTwo1,colour="gapDer2") , size=0.4, linetype="F1", alpha=1.0)+
+p2 <- ggplot(DT )+
+    geom_line( aes(wl, DerTworawsignoise1,colour="sgdo") , size=1.4, linetype = "solid", alpha=1.0)+
+    geom_line( aes(wl, DerTwoSGrawsignoise1,colour="sgdt") , size=0.4, linetype="F1", alpha=1.0)+
     scale_colour_manual("",
-                    breaks = c("gapDer1", "gapDer2"),values = c("blue", "red"))+
+                    breaks = c("sgdo", "sgdt"),values = c("blue", "red"))+
     theme(legend.position = c(0.8, 0.9),
           legend.background = element_rect(size = 0.2,
                                            color = "black",
                                            fill = "grey90",
                                            linetype = "solid"))
-
 
 
 tiff(filename= paste(tagname,"_p2.tiff",sep=''),
@@ -190,14 +196,11 @@ dev.off()
 
 
 
-
-
-
-p3 <- ggplot(DT)+
-    geom_line( aes(wl, DerOne1,colour="der_diff1") , size=1.4, linetype = "solid", alpha=1.0)+
-    geom_line( aes(wl, gsDerOne1,colour="gapDer") , size=0.4, linetype="F1", alpha=1.0)+
+pX <- ggplot(DT )+
+    geom_line( aes(wl, DerOneSGrawsignoise1,colour="sgdo") , size=1.4, linetype = "solid", alpha=1.0)+
+    geom_line( aes(wl, DerTwoSGrawsignoise1,colour="sgdt") , size=0.4, linetype="F1", alpha=1.0)+
     scale_colour_manual("",
-                    breaks = c("der_diff1", "gapDer"),values = c("blue", "red"))+
+                    breaks = c("sgdo", "sgdt"),values = c("blue", "red"))+
     theme(legend.position = c(0.8, 0.9),
           legend.background = element_rect(size = 0.2,
                                            color = "black",
@@ -205,23 +208,13 @@ p3 <- ggplot(DT)+
                                            linetype = "solid"))
 
 
-
-tiff(filename= paste(tagname,"_p3.tiff",sep=''),
+tiff(filename= paste(tagname,"_pX.tiff",sep=''),
    width=2000, height=1500, units="px", res=150, bg="transparent")
-p3
+pX
 dev.off()
 
 
 
-
-
-#
-# ### manipulatepcolumns-by-their-name-pattern-in-r-data-table
-# indx <- grep('gsDerOne', names(DT))
-# for(k in indx){set(DT,DT[[k]])}
-# #then shift for to lead/lag vectors and lists
-#
-#
 
 
 
