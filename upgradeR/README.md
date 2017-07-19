@@ -216,11 +216,6 @@ install.packages("latticeExtra", repos='https://www.stats.bris.ac.uk/R/')
 
 
 
-
-
-
-
-
 #### [prospectr](https://github.com/antoinestevens/prospectr)
 ```
 devtools::install_github("prospectr", "antoinestevens")
@@ -230,6 +225,14 @@ devtools::install_github("prospectr", "antoinestevens")
 ```
 
 
+
+# extras
+
+### 'quantmod' wrapper to load data from different sources
+install.packages("quantmod", repos='https://www.stats.bris.ac.uk/R/')
+
+### 'plyr' tools for splitting, appliying and combining data
+install.packages("plyr", repos='https://www.stats.bris.ac.uk/R/')
 
 
 

@@ -139,17 +139,38 @@ Takens_Theorem <- function(timeserie,dim,tau,print_flag)
   timedelayembedded <- embedd(timeserie,  m=dim, d=tau)
 
   if (print_flag == 1 ){
-    print("--------------")
-    print(paste("Embedded Parameters:         " ,"m=",dim," t=",tau,sep="" ))
-    print(paste("Embedded Matrix dimension:  ",dim(timedelayembedded)[1], 'x' ,dim(timedelayembedded)[2] ) )
+    message("--------------")
+    message("  Embedded Parameters:   " ,"m=",dim," tau=",tau,sep="" )
+    message("  Embedded Matrix dimension:  ",dim(timedelayembedded)[1], 'x' ,dim(timedelayembedded)[2] )
   }
 
   return (timedelayembedded)
 }
 # example:
-# embeddedmatrix <- Takens_Theorem(gy_zmuv,3,3,1)
+# Takens_Theorem(1:10, 10,1,1)
 
 
+
+
+#--------------------    Embedding  --------------------------
+# [http://www.fromthebottomoftheheap.net/2011/01/21/embedding-a-time-series-with-time-delay-in-r/]
+Embed <- function(x, m, d = 1, as.embed = TRUE) {
+    n <- length(x) - (m-1)*d
+
+    if(n <= 0)
+        stop("Insufficient observations for the requested embedding with n=", n)
+
+    # create the matrix with dimensions n x m
+    out <- matrix(rep(x[seq_len(n)], m), ncol = m)
+    message( "Embedded Matrix dimension:  ", dim(out)[1], 'x' ,dim(out)[2] )
+
+    out[,-1] <- out[,-1, drop = FALSE] + rep(seq_len(m - 1) * d, each = nrow(out))
+    if(as.embed)
+        out <- out[, rev(seq_len(ncol(out)))]
+    out
+}
+# Usage:
+# Embed(1:10, 10,1)
 
 
 
@@ -157,48 +178,38 @@ Takens_Theorem <- function(timeserie,dim,tau,print_flag)
 
 #-------------------- Principal Component Analysis  --------------------------
 PCA <- function(Embedded_Matrix, print_flag)
-#PCA <- function(Embedded_Matrix, print_flag=FALSE)
 {
-
 
   #For further testing
   #http://www.sthda.com/english/wiki/principal-component-analysis-in-r-prcomp-vs-princomp-r-software-and-data-mining
 
 
   # Center the data so that the mean of each row is 0
-  rm=rowMeans(t(Embedded_Matrix));
-  X= t(Embedded_Matrix  - t((matrix(rep(rm,dim(Embedded_Matrix)[1]),nrow=dim(Embedded_Matrix)[2]))))
+  rm <- rowMeans(t(Embedded_Matrix));
+  X <- t(Embedded_Matrix  - t((matrix(rep(rm,dim(Embedded_Matrix)[1]),nrow=dim(Embedded_Matrix)[2]))))
 
   # Covariance Matrix
-  E=X %*% t(X)
-  Eigen=eigen(E,TRUE)
+  E  <- X %*% t(X)
+  Eigen <- eigen(E,TRUE)
 
-  Evalues = Eigen$values
-  P=t(Eigen$vectors) # Principal Components
-
+  Evalues <- Eigen$values
+  PC <- t(Eigen$vectors) # Principal Components
 
 
   #the standard deviations of the principal components
-
   #sdev_method1= sqrt(Eigen$values)
-
-
-  singular_values =  sqrt(   diag(   ( 1 /(dim(X)[2]-1)*P%*% E %*% t(P) )   )   )
+  singular_values <- sqrt(   diag(   ( 1 /(dim(X)[2]-1)*PC%*% E %*% t(PC) )   )   )
   ### when obtaining the square root with sqrt( of the diagonal )
   ### some values are very little (e.g. 2.558211e-17 -1.518796e-16)
   ### so that the result is NaN
   # R cannot calculate the square root and warns you that the square root of a negative number is not a number (NaN).
-
   #(i.e., the square roots of the eigenvalues of the covariance/correlation matrix).
-
-
   singular_values <- replace(singular_values, is.nan(singular_values), 0)
   #http://stackoverflow.com/questions/18142117/how-to-replace-nan-value-with-zero-in-a-huge-data-frame
 
 
-
   # Find the new data ##Rotated data
-  rotateddata = P %*% X
+  rotateddata <- PC %*% X
 
 
   #Percentage Of Variance
@@ -229,11 +240,13 @@ PCA <- function(Embedded_Matrix, print_flag)
   }
 
   #output<-list(  [1] ,      [2]  ,            [3]  ,          [4]  ,      [5],   [6],   [7],     [8] )
-  output<-list(  P , singular_values  ,  rotateddata  ,   Eigen$values  ,  POV, cumEigv, twoPC, auc_cumEigv )
+  output<-list(  PC , singular_values  ,  rotateddata  ,   Eigen$values  ,  POV, cumEigv, twoPC, auc_cumEigv )
   return(output)
 
 }
-
+#Usage
+#        PCA( Embedded_Matrix, print_flag)
+# RSS <- PCA( temp_takens ,0)
 
 
 
