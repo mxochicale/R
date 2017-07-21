@@ -236,6 +236,12 @@ install.packages("plyr", repos='https://www.stats.bris.ac.uk/R/')
 
 
 
+### 'fNonlinear' tools for splitting, appliying and combining data
+install.packages("fNonlinear", repos='https://www.stats.bris.ac.uk/R/')
+
+
+
+
 ```
 install.packages("matrixStats", repos='https://www.stats.bris.ac.uk/R/')
 install.packages("reshape", repos='https://www.stats.bris.ac.uk/R/')
