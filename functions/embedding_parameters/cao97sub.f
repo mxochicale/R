@@ -1,13 +1,14 @@
 c
-c e1 and e2 values in fortran application differ slighly from the values in the wrapped fucntion in R, 
+c e1 and e2 values in fortran application differ
+c slighly from the values in the wrapped function in R,
 c since the the later use 16 decimal places
-c            
+c
 
-      subroutine cao97sub(x,ndp,maxd,tau,e1,e2)     
-      
+      subroutine cao97sub(x,ndp,maxd,tau,e1,e2)
+
       integer ndp, d, maxd, tau, maxtau
       double precision x(1:ndp),e1(1:maxd),e2(1:maxd),v(50),a(50),ya(50),v0,vij
- 
+
       do d=1,maxd
         a(d)=0.
         ya(d)=0.
