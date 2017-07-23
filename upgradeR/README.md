@@ -236,9 +236,12 @@ install.packages("plyr", repos='https://www.stats.bris.ac.uk/R/')
 
 
 
-### 'fNonlinear' tools for splitting, appliying and combining data
+### 'fNonlinear' tools
 install.packages("fNonlinear", repos='https://www.stats.bris.ac.uk/R/')
 
+
+### 'nonlinearTseries' tools for nonlinear time series analysis
+install.packages("nonlinearTseries", repos='https://www.stats.bris.ac.uk/R/')
 
 
 
