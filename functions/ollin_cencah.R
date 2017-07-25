@@ -914,7 +914,7 @@ Plot_3D_State_Space_testing  <- function(PCAMatrix,dim,tau,colour){
 
 
 
-
+################################################################################
 euclidean.distances <- function(PCAMatrix){
 
   N <- length(PCAMatrix[[1]][1,])
@@ -935,6 +935,49 @@ euclidean.distances <- function(PCAMatrix){
 }
 
 
+
+
+
+
+
+
+################################################################################
+euclidean.distances_rotateddata <- function(PCAMatrix){
+
+
+  #   #output<-  list(  [1] ,      [2]  ,            [3]  ,    ...
+  # PCA output   list(  P , singular_values  ,  rotateddata  , ...
+
+
+  N <- length(PCAMatrix[[3]][1,])
+
+
+  euc.dist <- function(x2, y2){
+      sqrt(  sum (  (x2)^2 + (y2)^2   ))
+    }
+
+  distances <- c()
+    for (i in 1:N)
+    {
+      distances <- c(distances, euc.dist( PCAMatrix[[3]][1,i], PCAMatrix[[3]][2,i] ))
+    }
+
+    return <- distances
+}
+# Usage
+# euclidean.distances_rotateddata(RSS)
+
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
 library(plot3D)
 plotRSS3D2D <-function (PCAMatrix)
 {
@@ -1001,7 +1044,74 @@ scatter2D(
 
 
 
+################################################################################
+################################################################################
+library(plot3D)
+plotRSS2D <-function (PCAMatrix,maxlimit)
+{
 
+
+  #   #output<-  list(  [1] , ...
+  # PCA output   list(  P , ...
+
+### Principal Components
+N <- length(PCAMatrix[[1]][1,])
+col.v <- 1:N
+x <- PCAMatrix[[1]][1,]
+y <- PCAMatrix[[1]][2,]
+
+
+scatter2D(
+     x, y, colvar = col.v, bty = "n", pch = ".",
+     type='l', lwd=5,
+     cex = 5,
+     main = "",
+     xlab = 'PC1', ylab ='PC2',
+     colkey = list(side = 4, plot = TRUE, length = 1, width = 0.5),
+     xlim = c(-maxlimit,maxlimit), ylim=c(-maxlimit,maxlimit)
+     )
+
+}
+#
+#
+# Usage of plotRSS3D2D(PCAMatrix). Example
+# plotRSS2D(RSS, 0.3)
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+library(plot3D)
+plotRSS2D_rotateddata <-function (PCAMatrix,maxlimit)
+{
+
+  #   #output<-  list(  [1] ,      [2]  ,            [3]  ,    ...
+  # PCA output   list(  P , singular_values  ,  rotateddata  , ...
+
+### Principal Components
+N <- length(PCAMatrix[[3]][1,])
+col.v <- 1:N
+x <- PCAMatrix[[3]][1,]
+y <- PCAMatrix[[3]][2,]
+
+
+scatter2D(
+     x, y, colvar = col.v, bty = "n", pch = ".",
+     type='l', lwd=5,
+     cex = 5,
+     main = "",
+     xlab = 'x', ylab ='y',
+     colkey = list(side = 4, plot = TRUE, length = 1, width = 0.5),
+     xlim = c(-maxlimit,maxlimit), ylim=c(-maxlimit,maxlimit)
+     )
+
+}
+# Usage
+# plotRSS2D_rotateddata(RSS, 10)
 
 
 

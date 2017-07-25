@@ -1,8 +1,8 @@
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 #
-# FileName:           plotly11.R
-# FileDescription:
+# FileName:
+# Description:
 #
 #
 # Reference:
@@ -31,12 +31,14 @@ ms <- letters[1:mn]
 
 dt <- NULL
 for (i in 1:20){
-  dt <- rbind(dt, data.table( sample=ms, val=(mv+ rnorm(mn,0,0.1*mv) ) ) )
+  dt <- rbind(dt,
+              data.table( sample=ms, val=(mv+ rnorm(mn,0,0.1*mv) ) ) 
+              )
 }
 summary(dt)
 
 
-#BoxPlot V0
+# #BoxPlot V0
 # p.box <- ggplot(dt)+
 #   geom_boxplot( aes(sample, val, fill=sample) )+
 #   geom_jitter(aes(sample, val, fill=sample),
@@ -51,7 +53,7 @@ summary(dt)
 #   theme(panel.grid.minor= element_blank(),
 #         panel.border=element_rect(color="black"),
 #         legend.position="none")
-
+# p.box
 
 #BoxPlot V1
 p.box <-  ggplot(dt, aes(x=sample, y=val) )+
@@ -69,7 +71,7 @@ p.box <-  ggplot(dt, aes(x=sample, y=val) )+
 
 p.box
 
-#### If it is possible, please avoid to create heavy files
+
 # tiff("jittering.tiff", height=1000, width=2000, units="px", res=200)
 # print(p.box)
 # dev.off()

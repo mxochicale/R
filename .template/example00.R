@@ -2,10 +2,10 @@
 #
 #
 # FileName:           example00.R
-# FileDescription:
+# Description:
 #
 #
-# Reference:
+# References:
 #
 #
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
