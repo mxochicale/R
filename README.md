@@ -8,6 +8,7 @@ developed, just as is done in other
 areas of science.*  ~ W.S. Cleveland, 1983
 
 
+
 # Basic R-rules
 
 * Be minimal and light when you are coding in R (or any programming language).
@@ -16,13 +17,14 @@ and a waste of time.
 * Avoid any heavy files which means that you have to add description on where
 and how to download those huge files or paths.
 
-# File Structure description
+# [References](https://github.com/mxochicale/r-code_repository/blob/master/REFERENCES.md)
+
+# [.template: File Structure description](https://github.com/mxochicale/r-code_repository/tree/master/.template)
   * .Rhistory
   * README.md
   * *.R files*
 
 
-# [References](https://github.com/mxochicale/r-code_repository/blob/master/README.md)
 
 
 # TODO

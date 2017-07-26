@@ -2,7 +2,7 @@ References
 ---
 
 
-# Useful References
+# Intro to R
 * [Free course for R](http://tryr.codeschool.com/)  
 * [Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 
@@ -29,13 +29,13 @@ References
 * [Getting and Cleaning Data in Human Activity Recognition](https://www.10h11.com/en/blog/article/getting-and-cleaning-data-in-human-activity-recognition)
 
 # data.table
-* [wiki](https://github.com/Rdatatable/data.table/wiki)
-* [CheatSheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
-* [Getting Started](https://github.com/Rdatatable/data.table/wiki/Getting-started)
-* [Intro to data.table](https://rawgit.com/wiki/Rdatatable/data.table/vignettes/datatable-intro.html#data)
-* [Advanced data.table](http://brooksandrew.github.io/simpleblog/articles/advanced-data-table/)
-* [three hour tutorial](http://user2014.r-project.org/files/tutorial_Matt.pdf)
-* [data.table and ggplot2](https://stackoverflow.com/questions/41536406/how-to-apply-separate-coord-cartesian-to-zoom-in-into-individual-panels-of-a)
+* [wiki](https://github.com/Rdatatable/data.table/wiki)  
+* [CheatSheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)  
+* [Getting Started](https://github.com/Rdatatable/data.table/wiki/Getting-started)  
+* [Intro to data.table](https://rawgit.com/wiki/Rdatatable/data.table/vignettes/datatable-intro.html#data)  
+* [Advanced data.table](http://brooksandrew.github.io/simpleblog/articles/advanced-data-table/)  
+* [three hour tutorial](http://user2014.r-project.org/files/tutorial_Matt.pdf)  
+* [data.table and ggplot2](https://stackoverflow.com/questions/41536406/how-to-apply-separate-coord-cartesian-to-zoom-in-into-individual-panels-of-a)  
 
 * [data.table vs data.frame](https://www.analyticsvidhya.com/blog/2016/05/data-table-data-frame-work-large-data-sets/)
 * [data.table vs dplyr](https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly/27840349#27840349)
@@ -43,10 +43,10 @@ References
 
 
 # Sound R
-* [tuneR doc](ftp://cran.r-project.org/pub/R/web/packages/tuneR/tuneR.pdf)
-* [seewave doc](https://cran.r-project.org/web/packages/seewave/seewave.pdf)
-* [seewave tutorial](https://cran.r-project.org/web/packages/seewave/vignettes/seewave_IO.pdf)
-* [seewave online tutorial](http://rug.mnhn.fr/seewave/)
+* [tuneR doc](ftp://cran.r-project.org/pub/R/web/packages/tuneR/tuneR.pdf)  
+* [seewave doc](https://cran.r-project.org/web/packages/seewave/seewave.pdf)  
+* [seewave tutorial](https://cran.r-project.org/web/packages/seewave/vignettes/seewave_IO.pdf)  
+* [seewave online tutorial](http://rug.mnhn.fr/seewave/)  
 
 
 # Filtering
