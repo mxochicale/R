@@ -3,6 +3,7 @@ R package example
 
 This example is based on
 [H. Parker Tutorial](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/).
+This is a more complete tutorial by broman [pkg_primer](http://kbroman.org/pkg_primer/)
 
 
 # 1 Install Required packages
