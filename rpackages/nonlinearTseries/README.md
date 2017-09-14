@@ -32,6 +32,22 @@ library('nonlinearTseries')
 ```
 
 ```
-x = 1:20
-takens = buildTakens(x,embedding.dim=5,time.lag=3)
+buildTakens(1:20,embedding.dim=5,time.lag=3)
+```
+
+
+## Loading nonlinearTseries from a given path
+
+```
+library(devtools)
+load_all('~/mxochicale/github/r-code_repository/rpackages/nonlinearTseries')
+buildTakens(1:20,embedding.dim=5,time.lag=3)
+```
+
+or
+```
+library(devtools)
+install('~/mxochicale/github/r-code_repository/rpackages/nonlinearTseries')
+library('nonlinearTseries')
+buildTakens(1:20,embedding.dim=5,time.lag=3)
 ```
