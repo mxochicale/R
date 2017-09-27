@@ -193,6 +193,9 @@ lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stat
 ```
 
 
+### pals: Color Palettes, Colormaps, and Tools to Evaluate Them
+install.packages("pals", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
+
 
 ## More packages
 
@@ -242,6 +245,7 @@ install.packages("fNonlinear", repos='https://www.stats.bris.ac.uk/R/')
 
 ### 'nonlinearTseries' tools for nonlinear time series analysis
 install.packages("nonlinearTseries", repos='https://www.stats.bris.ac.uk/R/')
+
 
 
 
