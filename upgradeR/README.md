@@ -156,6 +156,12 @@ install.packages("ggplot2", repos='https://www.stats.bris.ac.uk/R/', dependencie
 * DONE (ggplot2)
 ```
 
+### latex2exp
+```
+install.packages("latex2exp", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
+```
+
+
 
 
 ### tseriesChaos
@@ -164,7 +170,6 @@ install.packages("tseriesChaos", repos='https://www.stats.bris.ac.uk/R/', depend
 #or
 # if (!require("tseriesChaos")) install.packages("tseriesChaos", repos='https://www.stats.bris.ac.uk/R/')
 ```
-
 
 ####  for savitzly-golay filter
 ```
@@ -185,7 +190,7 @@ It takes a while of time for the installation, perhaps 5 min.
 lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stats.bris.ac.uk/R/')
 ```
 
-### plot3D
+## plot3D
 
 ```
 .packages <- c('car', 'scatterplot3d', 'plot3D')
