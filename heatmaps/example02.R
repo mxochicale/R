@@ -3,7 +3,7 @@
 #
 # FileName:           example02.R
 # FileDescription:
-# https://www.r-bloggers.com/how-to-create-a-fast-and-easy-heatmap-with-ggplot2/ 
+# https://www.r-bloggers.com/how-to-create-a-fast-and-easy-heatmap-with-ggplot2/
 # http://rpubs.com/melike/heatmapTable
 #
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -51,7 +51,7 @@ names(df_heatmap)[2:3] <- c("patient","expression_level")
 head(df_heatmap)
 
 
-### Elaboration of heatmap (white - steelblue)
+#### Elaboration of heatmap (white - steelblue)
 
 ggplot(df_heatmap, aes(patient,genes))+
 	geom_tile(aes(fill=expression_level))+
@@ -67,8 +67,8 @@ ggplot(df_heatmap, aes(patient,genes))+
 	      axis.title=element_text(size=14,face="bold"),
 	      axis.text.x=element_text(angle=90,hjust=1))+
 	labs(fill="Expression level")
-		
-	
+
+
 
 #################
 # Stop the clock!
