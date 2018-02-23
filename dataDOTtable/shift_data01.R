@@ -30,8 +30,9 @@ dt <- data.table(
   )
 setkey(dt, entity, date)   # important for ordering
 
+## using shift 
 dt[,indpct_fast:=( ind/ shift(ind,1) )-1, by=entity]
 
-
+## using a function
 lagpad <- function(x,k) c(rep(NA,k),x)[1:length(x)]
 dt[,indpct_slow:=(ind/lagpad(ind,1))-1, by=entity]
