@@ -5,16 +5,16 @@ Upgrading R and  Installing packages for R
 # Installation Ubuntu
 
 R packages for Ubuntu on i386 and amd64 are available for all stable Desktop releases
-of Ubuntu until their official end of life date. As of May 3, 2017 the supported releases
-are Xenial Xerus (16.04; LTS) Trusty Tahr (14.04; LTS), etc.
+of Ubuntu until their official end of life date. 
 
 
-1. Add an appropriate mirror to your source.list
+## 1. Add an appropriate mirror to your source.list
 
 "deb https://<my.favorite.cran.mirror>/bin/linux/ubuntu distro/""
 
 
-* Ubuntu 14.04 x64
+###  Ubuntu 14.04 x64
+
 ```
 sudo sh -c 'echo "deb https://www.stats.bris.ac.uk/R/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list'
 ```
@@ -27,12 +27,12 @@ deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ trusty-security main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ trusty-updates main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ trusty-proposed main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
 ```
- #deb http://archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
 
 
+### Ubuntu 16.04 x64
 
-* Ubuntu 16.04 x64
 ```
 sudo sh -c 'echo "deb https://www.stats.bris.ac.uk/R/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list'
 ```
@@ -45,13 +45,12 @@ deb http://archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse
 ```
- #deb http://archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse
 
 
 
-
-2. Set the keyserver, update and install R
+## 2. Set the keyserver, update and install R
 ```
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
 gpg -a --export E084DAB9 | sudo apt-key add -
@@ -65,34 +64,13 @@ sudo apt-get install cdbs
 sudo apt-get install r-base r-base-dev
 ```
 
-Output
+or run
 ```
-$ sudo apt-get install r-base r-base-dev
-Reading package lists... Done
-Building dependency tree       
-Reading state information... Done
-The following packages were automatically installed and are no longer required:
-  libreadline5 linux-headers-4.4.0-31 linux-headers-4.4.0-31-generic linux-headers-4.4.0-75 linux-headers-4.4.0-75-generic linux-image-4.4.0-31-generic linux-image-4.4.0-75-generic
-  linux-image-extra-4.4.0-31-generic linux-image-extra-4.4.0-75-generic ubuntu-core-launcher
-Use 'sudo apt autoremove' to remove them.
-The following additional packages will be installed:
-  libreadline-dev libreadline6-dev r-base-core r-base-html r-cran-boot r-cran-class r-cran-cluster r-cran-codetools r-cran-foreign r-cran-kernsmooth r-cran-lattice r-cran-mass r-cran-matrix r-cran-mgcv
-  r-cran-nlme r-cran-nnet r-cran-rpart r-cran-spatial r-cran-survival r-doc-html r-recommended
-Suggested packages:
-  readline-doc ess r-doc-info | r-doc-pdf r-mathlib texlive-base texlive-latex-base texlive-generic-recommended texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils
-  texlive-latex-recommended texlive-latex-extra texinfo
-The following packages will be REMOVED
-  libreadline-gplv2-dev
-The following NEW packages will be installed
-  libreadline-dev libreadline6-dev r-base r-base-core r-base-dev r-base-html r-cran-boot r-cran-class r-cran-cluster r-cran-codetools r-cran-foreign r-cran-kernsmooth r-cran-lattice r-cran-mass
-  r-cran-matrix r-cran-mgcv r-cran-nlme r-cran-nnet r-cran-rpart r-cran-spatial r-cran-survival r-doc-html r-recommended
-0 to upgrade, 23 to newly install, 1 to remove and 181 not to upgrade.
-Need to get 40.5 MB of archives.
-After this operation, 62.8 MB of additional disk space will be used.
-Do you want to continue? [Y/n] Y
+./install-R.sh
 ```
 
-3. Sources
+
+## Sources
 
 * Main Reference https://cran.rstudio.com/bin/linux/ubuntu/  
 * [List of mirrors](https://cran.r-project.org/mirrors.html)
@@ -109,177 +87,33 @@ Do you want to continue? [Y/n] Y
   ```
 
 
-# TODO
-
-* create sh or Makefile for automatic upgrade of R
+# Install Packages
 
 
+## Basic packages
 
 
-
-
-# Basic packages
-
-Using Bristol repo!:
-install.packages('package-name', repos='https://www.stats.bris.ac.uk/R/')
-
-
-### devtools
-
-devtools dependencies
+`chmod +x packages-dependencies.sh`
 
 ```
-sudo apt-get install libssl-dev libcurl4-openssl-dev
-```
-
-```
-install.packages("devtools", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
+./packages-dependencies.sh
 ```
 
 
-#### [data.table]([https://github.com/Rdatatable/data.table/wiki/Installation)
+`source(paste(getwd(),"/install-basic-packages.R", sep=""), echo=FALSE)` which install the following packages:
 ```
-library(devtools)
-install_github("Rdatatable/data.table", build_vignettes=FALSE)
-```
-[MORE](https://github.com/Rdatatable/data.table/wiki/Installation#why-we-recommend-installpackages-above-rather-than-devtoolsinstall_github)
-
-
-
-### ggplot2
-It takes a while of time for the installation, perhaps 3 min.
-for percentage of variance bar plot and error bars
-```
-install.packages("ggplot2", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-#or
-# if (!require("ggplot2")) install.packages("ggplot2", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-* DONE (ggplot2)
-```
-
-### latex2exp
-```
-install.packages("latex2exp", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
+devtools
+data.table
+ggplot2
+signali for savitzly-golay filter
+car, scatterplot3d, plot3D
 ```
 
 
+## Extra packages
 
-
-### tseriesChaos
-```
-install.packages("tseriesChaos", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-#or
-# if (!require("tseriesChaos")) install.packages("tseriesChaos", repos='https://www.stats.bris.ac.uk/R/')
-```
-
-####  for savitzly-golay filter
-```
-install.packages("signal", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-```
-#### Interpolation of Irregular and Regularly Spaced Data
-```
-install.packages("akima", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-```
-
-
-
-### rgl
-
-It takes a while of time for the installation, perhaps 5 min.
-```
-.packages <- ("rgl")
-lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stats.bris.ac.uk/R/')
-```
-
-## plot3D
-
-```
-.packages <- c('car', 'scatterplot3d', 'plot3D')
-lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stats.bris.ac.uk/R/')
-```
-
-
-### pals: Color Palettes, Colormaps, and Tools to Evaluate Them
-install.packages("pals", repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-
-
-## More packages
-
-
-
-### latice
-
-```
-install.packages("lattice", repos='https://www.stats.bris.ac.uk/R/')
-#or
-# if (!require("lattice")) install.packages("lattice", repos='https://www.stats.bris.ac.uk/R/')  ##xyplot
-```
-
-### latticeExtra
-```
-install.packages("latticeExtra", repos='https://www.stats.bris.ac.uk/R/')
-# or
-# if (!require("latticeExtra")) install.packages("latticeExtra", repos='https://www.stats.bris.ac.uk/R/')   ##overlay xyplots a + as.layer(b)
-
-```
-
-
-
-#### [prospectr](https://github.com/antoinestevens/prospectr)
-```
-devtools::install_github("prospectr", "antoinestevens")
-
-# Warning message:
-# Username parameter is deprecated. Please use antoinestevens/prospectr
-```
-
-
-
-# extras
-
-### 'quantmod' wrapper to load data from different sources
-install.packages("quantmod", repos='https://www.stats.bris.ac.uk/R/')
-
-### 'plyr' tools for splitting, appliying and combining data
-install.packages("plyr", repos='https://www.stats.bris.ac.uk/R/')
-
-
-
-### 'fNonlinear' tools
-install.packages("fNonlinear", repos='https://www.stats.bris.ac.uk/R/')
-
-
-### 'nonlinearTseries' tools for nonlinear time series analysis
-install.packages("nonlinearTseries", repos='https://www.stats.bris.ac.uk/R/')
-
-
-
-
-```
-install.packages("matrixStats", repos='https://www.stats.bris.ac.uk/R/')
-install.packages("reshape", repos='https://www.stats.bris.ac.uk/R/')
-
-
-
-install.packages("lubridate") # for working with date/times
-install.packages("dplyr") # for manipulating data
-install.packages("tidyr") # for tydying data
-install.packages("plotly") # for beuatiful ploting
-#Hadley Wickham
-install.packages("zoo") # for databases
-install.packages("plyr") # for databases
-
-
-
-install.packages("gplots", dependencies = TRUE) #for heatmaps
-install.packages("RColorBrewer", dependencies = TRUE)
-install.packages("scatterplot3d")
-install.packages("latticeExtra")
-
-install.packages('fractal', repos='https://www.stats.bris.ac.uk/R/', dependencies = TRUE)
-
-install.packages("ROCR") #visualizing classifier performance
-install.packages("pROC") #Display and Analyze ROC Curves
-```
+`source(paste(getwd(),"/install-extra-packages.R", sep=""), echo=FALSE)` install many package
+for which, it is suggested to check out the r-script
 
 
 
@@ -447,3 +281,58 @@ language       R
 version.string R version 3.4.0 (2017-04-21)
 nickname       You Stupid Darkness        
 ```
+
+
+
+
+
+
+
+
+
+
+### R version 3.4.3 (2018-03-04)
+
+#### Machine
+Laptop SAMSUNG
+
+```
+$ cat /proc/cpuinfo  | grep 'name'| uniq
+model name	: Intel(R) Core(TM) i5-3317U CPU @ 1.70GHz
+$ grep MemTotal /proc/meminfo
+MemTotal:        7871624 kB
+```
+
+
+
+#### OS
+```
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 14.04.5 LTS
+Release:	14.04
+Codename:	trusty
+```
+
+#### R version
+```
+$ R
+> version
+               _                           
+platform       x86_64-pc-linux-gnu         
+arch           x86_64                      
+os             linux-gnu                   
+system         x86_64, linux-gnu           
+status                                     
+major          3                           
+minor          4.3                         
+year           2017                        
+month          11                          
+day            30                          
+svn rev        73796                       
+language       R                           
+version.string R version 3.4.3 (2017-11-30)
+nickname       Kite-Eating Tree            
+```
+
