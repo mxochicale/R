@@ -1,6 +1,11 @@
-Cao's method to find the minimal embedding dimension
------------------
-TODO: Check the paths of the files, the code might brake because of the paths
+Cao's draft examples
+----
+
+
+# TODO
+* [ ] Check the paths for `paste(main_path,"/timeseries",sep="")` and 
+use different time series: `fread("periodic.dt", header=TRUE)`, `fread("chaotic.dt", header=TRUE)`
+
 
 
 # Usage
@@ -18,10 +23,15 @@ gfortran   -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4  -c cao97su
 gcc -std=gnu99 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,relro -o cao97sub.so cao97sub.o -lgfortran -lm -lquadmath -L/usr/lib/R/lib -lR
 ```
 
-* 3 Run rf_cao97.R to compute E1 and E2 values and print the values in plots
+* 3 Run `rf_cao97NN.R` to compute E1 and E2 values and print the values in plots
 
 ```
 R
 source(paste(getwd(),"/rf_cao97vNN.R", sep=""), echo=FALSE)
 ```
 where NN is the number of version.
+
+
+* `rf_cao97v00.R` uses `data.table` and `ggplot2` packages
+* `rf_cao97v01.R` uses `data.table` and `ggplot2` packages
+* `rf_cao97v02.R` uses `data.table` and `ggplot2` packages

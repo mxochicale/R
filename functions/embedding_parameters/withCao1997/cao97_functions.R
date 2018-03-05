@@ -34,7 +34,7 @@
 #to replace NaN values, use
 #X <- replace(X, is.nan(X), 0)
 cao97sub <- function(x,maxd,tau) {
-    dyn.load('~/mxochicale/github/r-code_repository/functions/embedding_parameters/withCao1997/cao97sub.so')
+    dyn.load('~/mxochicale/github/R/functions/embedding_parameters/withCao1997/cao97sub.so')
     lx = length(x)
     retdata <- .Fortran("cao97sub",
                         x = as.double(x),

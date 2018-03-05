@@ -83,7 +83,7 @@ p <- ggplot(lts) +
 ################################################################################
 ## CAO's Algorithm
 ##
-source('~/mxochicale/github/r-code_repository/functions/embedding_parameters/withCao1997/cao97_functions.R')
+source('~/mxochicale/github/R/functions/embedding_parameters/withCao1997/cao97_functions.R')
 
 maxdim <- 31
 maxtau <- 15
