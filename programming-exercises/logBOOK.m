@@ -10,4 +10,8 @@
 	(added27april2018.06h11m:sorted???) 
 
 # SORTED
-* 
+
+* [x] organising five path with references and version folders   
+	added.sorted: Fri May 11 10:44:43 BST 2018   
+
+
