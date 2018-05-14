@@ -397,10 +397,11 @@ return ( matrix(1) )
 	#create empty matrix with the dimensions
 	A <- matrix( nrow=n*p,ncol=n )
 	for ( i in 1:n ){
-		A[(i-1)*p+1:p,]	<- cbind(i,sp+(sp>=i) )
-		#message(sp )
-		#message(sp>=i )
-		#message(sp+(sp>=i) )
+		A[(i-1)*p+(1:p),]	<- cbind(i,sp+(sp>=i) )
+		#message('i',i,'  '  , '   ', (i-1)*p+1:p )
+		#message('i',i,'  '  , '   ',   sp+(sp>=i)   )
+		#message('i',i,'  '  , '   ',   cbind(  i, sp+(sp>=i)    )   )
+		#message('i',i,'  ', ( (i-1)*p ), ((1:p))   , '   ', (i-1)*p+1:p )
 	}	
 
 	return(A)
@@ -411,14 +412,13 @@ return ( matrix(1) )
 
 permu( 1 )
 permu( 2 )
-#permu( 3 )
+permu( 3 )
 
 
 
 
 
 
-#
 #################################
 ###  Thu May 10 23:51:49 BST 2018
 #
