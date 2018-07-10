@@ -1,7 +1,8 @@
 3D plots
 -------
 
-## Install packages:
+## Packages dependencies
+
 ```
 .packages <- ("rgl")
 lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stats.bris.ac.uk/R/')
@@ -15,20 +16,9 @@ lapply(.packages, install.packages, dependencies = TRUE, repos='https://www.stat
 
 
 
-## .Rhistory
-```
-source(paste(getwd(),"/scatterplot3d.R", sep=""), echo=FALSE)
-source(paste(getwd(),"/plot3D.R", sep=""), echo=FALSE)
-source(paste(getwd(),"/Aa_scatter3d.R", sep=""), echo=FALSE)
-source(paste(getwd(),"/Ab_scatter3d.R", sep=""), echo=FALSE)
-source(paste(getwd(),"/Ac_scatter3d.R", sep=""), echo=FALSE)
-```
 
 
-
-
-
-# Sources
+# References
 
 * Presentation with images   
 http://pj.freefaculty.org/guides/Rcourse/plot-3d/plots-3d.pdf
@@ -43,3 +33,12 @@ https://stanford.edu/class/cme195/lectures/Lecture5.html#/section-5
 * https://casoilresource.lawr.ucdavis.edu/software/r-advanced-statistical-package/interactive-3d-plots-rgl-package    
 
 * [ ] http://www.statmethods.net/graphs/scatterplot.html  
+
+
+## plot 3D
+
+* https://cran.r-project.org/web/packages/plot3D/index.html
+* https://cran.r-project.org/web/packages/plot3D/plot3D.pdf
+* https://cran.r-project.org/web/packages/plot3D/vignettes/plot3D.pdf
+
+
