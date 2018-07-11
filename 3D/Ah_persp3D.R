@@ -56,4 +56,6 @@ persp3D(
 	)
 
 #Grey contour lines are addedon the bottom panel ("zmin") 
-#and on the persp plot itself ("z"). 
+#and on the persp plot itself ("z").
+#
+
