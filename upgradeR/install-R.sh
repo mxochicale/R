@@ -5,8 +5,6 @@
 #./file
 
 
-
-
 sudo apt-get update
 sudo apt-get --yes install gfortran
 sudo apt-get --yes install libblas-dev libatlas-base-dev liblapack-dev libatlas-base-dev libncurses5-dev
