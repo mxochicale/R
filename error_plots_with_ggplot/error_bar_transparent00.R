@@ -38,25 +38,25 @@ for (i in 1:20){
 summary(dt)
 
 
-# #BoxPlot V0
-# p.box <- ggplot(dt)+
-#   geom_boxplot( aes(sample, val, fill=sample) )+
-#   geom_jitter(aes(sample, val, fill=sample),
-#               position=position_jitter(width=0.1, height=0),
-#               color="blue",
-#               alpha=0.2,
-#               size=2
-#                 )+
-#   scale_fill_brewer(palette="Set3")+
-#   labs(x= "Sample", y="Measure")+
-#   theme_bw(15)+
-#   theme(panel.grid.minor= element_blank(),
-#         panel.border=element_rect(color="black"),
-#         legend.position="none")
-# p.box
+ #BoxPlot V0
+pbox0 <- ggplot(dt)+
+   geom_boxplot( aes(sample, val, fill=sample) )+
+   geom_jitter(aes(sample, val, fill=sample),
+               position=position_jitter(width=0.1, height=0),
+               color="blue",
+               alpha=0.2,
+               size=2
+                 )+
+   scale_fill_brewer(palette="Set3")+
+   labs(x= "Sample", y="Measure")+
+   theme_bw(15)+
+   theme(panel.grid.minor= element_blank(),
+         panel.border=element_rect(color="black"),
+         legend.position="none")
+#pbox0
 
 #BoxPlot V1
-p.box <-  ggplot(dt, aes(x=sample, y=val) )+
+pbox1 <-  ggplot(dt, aes(x=sample, y=val) )+
           geom_point(aes(fill=sample),
                     alpha=0.8,
                     size=4,
@@ -67,9 +67,9 @@ p.box <-  ggplot(dt, aes(x=sample, y=val) )+
          theme_bw(15)+
          theme(panel.grid.minor= element_blank(),
                panel.border=element_rect(color="black"),
-               legend.position="none")
-
-p.box
+               legend.position="none")+
+  	stat_summary(fun.y = mean, geom = "point", shape = 23, size = 4, fill = "gray")
+#pbox1
 
 
 # tiff("jittering.tiff", height=1000, width=2000, units="px", res=200)
